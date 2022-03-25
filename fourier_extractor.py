@@ -29,9 +29,7 @@ class FourierExtractor:
             sparse_wht = SWHTRobust(self.n_var, k, finite_field_class="reed_solomon_cs", degree=6, robust_iterations=1 , epsilon = self.epsilon)
             self.model.sampling_complexity = 0
             fourier_transform = sparse_wht.run(self.model)
-        elif algorithm == "l1_minimization":
-            l1_minimzation = L1Minimzation(self.n_var,k,self.model, degree=2,C=40)
-            fourier_transform = l1_minimzation.run()
+
         # need to compile the keys into sets for compatibility with Jan's code
         series = {}
         # print("Fourier=", fourier_transform)

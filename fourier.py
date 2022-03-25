@@ -14,7 +14,7 @@ class Fourier:
     # Remove frequencies with zero coefficients
     def cleanup(self):
         for key in list(self.series.keys()):
-            if isclose(abs(self.series[key]), 0, abs_tol=0.00001 ) :
+            if isclose(abs(self.series[key]), 0, abs_tol=0.00001) :
                 self.series.pop(key)
 
     def __str__(self):

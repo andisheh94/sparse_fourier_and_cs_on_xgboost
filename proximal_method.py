@@ -22,7 +22,7 @@ class ProximalMethod():
                 temp = np.zeros(self.n, dtype=int)
                 temp[freq] = 1
                 self.freqlist[self.no_basis_functions] = list(temp)
-                self.no_basis_functions+=1
+                self.no_basis_functions += 1
 
 
 
@@ -114,4 +114,4 @@ if __name__ == "__main__":
     f = RandomFunction(n, k , d)
     print(f)
     proximal_method = ProximalMethod(n, k, d)
-    # print(proximal_method.run(f))
+    print(proximal_method.run(f))
