@@ -1,0 +1,26 @@
+
+# Automatic CMake ignore
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+# vscode ignore
+.vscode
+
+# build ignore
+build/
+
+# Python ignore
+__pycache__/
+swht.egg-info/
+
+# original lib artefacts ignore
+fastwht/**/_hadamardKernel*

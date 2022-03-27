@@ -1,0 +1,9 @@
+setuptools~=58.0.4
+numpy~=1.22.3
+apgpy~=0.1
+reedsolo~=1.5.4
+pandas~=1.4.1
+sklearn~=0.0
+scikit-learn~=1.0.2
+typing_extensions~=3.10.0.2
+pyscipopt~=4.2.0

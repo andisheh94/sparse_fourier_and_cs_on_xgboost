@@ -1,0 +1,9 @@
+#================================
+# Ignores specific to benchmarks
+#================================
+
+# Ignore all results (for now)
+results/*_*_*_*.csv
+out/
+
+ops/*_*_*_*.csv
