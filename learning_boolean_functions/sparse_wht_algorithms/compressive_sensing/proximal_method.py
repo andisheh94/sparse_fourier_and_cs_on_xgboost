@@ -1,18 +1,26 @@
 import apgpy as apg
 import numpy as np
-from math import log, isclose, factorial
-from random_function import RandomFunction
+from math import log2, isclose
+from helpers.random_function import RandomFunction
+from random_forest_builder.fourier import Fourier, TOLERANCE_ZERO
 from itertools import combinations
-import random
+from tqdm import tqdm
 class ProximalMethod():
-    def __init__(self, n, k, degree= 2, C=10):
+    def __init__(self, n, k, degree, C):
+        # Dimension
         self.n = n
+        # Sparsity
         self.k = k
+        # Sampling constant factor
         self.C = C
+        # Degree
         self.degree = degree
+        # m is number of measurements
+        self.m = int(self.C * self.k * self.degree * log2(self.n))
+        # Boolean flag
+        self.function_is_sampled = False
         self.freqlist = {}
         self.no_basis_functions = 0
-
         coordinates = range(self.n)
         for d in range(self.degree+1):
             frequencies = list(combinations(coordinates, d))
@@ -23,16 +31,10 @@ class ProximalMethod():
                 temp[freq] = 1
                 self.freqlist[self.no_basis_functions] = list(temp)
                 self.no_basis_functions += 1
-
-
-
-        # if self.degree < n:  # intitialze prob array for the low-degree sampler
-        #     self.prob_array = np.zeros(self.degree + 1)
-        #     sum = 0
-        #     for i in range(self.degree + 1):
-        #         self.prob_array[i] = self.__nCr(self.n, i)
-        #         sum += self.__nCr(self.n, i)
-        #     self.prob_array /= sum
+        # Measurement matrix
+        self.psi = np.zeros((self.m, self.no_basis_functions))
+        # Linear measurements vector
+        self.y = np.zeros(self.m)
 
 
     def get_degree(self, freq):
@@ -62,50 +64,46 @@ class ProximalMethod():
         out = np.dot(self.psi.transpose(), (np.dot(self.psi, x) - self.y))
         return out/(self.lmda*self.m)
 
-
     def proximal(self, v, t):
         return np.sign(v) * np.maximum(abs(v) - t, 0)
 
     def sample_function(self, f):
-        # np.random.seed(1)
-        # m = No. of measurements
-        self.m = int(self.C * self.k * self.degree * log(self.n))
-        print("m=", self.m)
-        # print("m=", self.m)
-        # self.m = 2 ** n
-        self.psi = np.zeros((self.m, self.no_basis_functions))
-        self.y = np.zeros(self.m)
-        dict = {}  # Avoid redundant t
-        for j in range(self.m):
+        t_dict = set()  # Avoid redundant t
+        print(f"Generating {self.m} samples")
+        for j in tqdm(range(self.m)):
             # Generate a random input
             t = [np.random.randint(0, 2) for _ in range(self.n)]
-            while tuple(t) in dict:
+            while tuple(t) in t_dict:
                 t = [np.random.randint(0, 2) for _ in range(self.n)]
             t = tuple(t)
-            dict[t] = 1
+            t_dict.add(t)
             for freq in range(self.no_basis_functions):
                 self.psi[j, freq] = (-1) ** np.dot(t, self.freqlist[freq])
-            self.y[j] = f[t]
+            self.y[j] = f.__getitem__(t)
+        self.function_is_sampled = True
             # Subtract off estimate
         # print("sampling finished")
         # print(self.psi, self.y)
 
-    def run(self, f, lmda=0.01):
-        self.sample_function(f)
+    def run(self, lmda=0.01):
+        if self.function_is_sampled is False:
+            print("Need to sample function first")
+            return Fourier({})
         self.lmda = lmda
-        if isclose(np.linalg.norm(self.y), 0, rel_tol=0.001):
-            return {}
         x = apg.solve(self.grad, self.proximal, np.zeros(self.no_basis_functions), quiet=True)
-        return self.get_fourier_transform(x)
+        print(x)
+        return self._get_fourier_series_from_vector(x)
 
 
-    def get_fourier_transform(self, x):
-        fourier = {}
+    def _get_fourier_series_from_vector(self, x):
+        series = {}
         for freq in range(self.no_basis_functions):
-            if not isclose(x[freq], 0, rel_tol=0.001):
-                fourier[tuple(self.freqlist[freq])] = x[freq]
-        return fourier
+            if not isclose(x[freq], 0, abs_tol=TOLERANCE_ZERO):
+                series[tuple(self.freqlist[freq])] = x[freq]
+        return series
 
+    def get_number_of_measurements(self):
+        return self.m
 
 if __name__ == "__main__":
     n = 10

@@ -1,5 +1,5 @@
 import numpy as np
-from fourier import Fourier
+from random_forest_builder.fourier import Fourier
 from functools import cache
 from collections import deque
 """
@@ -9,7 +9,6 @@ Each instance of this class is node (either leaf of non-leaf)
 
 
 class Node:
-
     def __init__(self, value=None, label=None, left=None, right=None):
         # self.value is the real number in the node  is a leaf and None if it is a split_node
         self.value = value
