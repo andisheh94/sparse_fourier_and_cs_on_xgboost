@@ -1,1 +1,0 @@
-{"n": 10, "no_trees": 100, "depth": 1, "C": 1.0, "lambda": 0.001, "try_number": 0, "k": 2, "time": 0.05692601203918457, "equality": true, "mse": 1.125056339564638e-06, "true_fourier_norm_squared": 5292.179341279462, "computed_fourier_norm_squared": 5292.070079656168, "measurements": 6}

@@ -28,8 +28,8 @@ if __name__ == "__main__":
     equality = (fourier_transform == true_fourier_transform)
     mse = Fourier.get_mse(fourier_transform, true_fourier_transform)
     true_fourier_norm_squared, computed_fourier_norm_squared = true_fourier_transform.norm_squared(), fourier_transform.norm_squared()
-    with open(f"../results/cs/n={n}_no_trees={no_trees}_depth={depth}_"
-              f"C={C}_tryno={try_number}.json", 'w', encoding='utf-8') as f:
+    with open(f"../results/reed_solomon/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
+              f"C={C:.3}_ratio={ratio:.3}_tryno={try_number}.json", 'w', encoding='utf-8') as f:
         results_dict = {"n": n, "no_trees": no_trees, "depth": depth, "C": C, "ratio": ratio,
                         "try_number": try_number, "k": k, "time": elapsed_time, "equality": equality, "mse": mse,
                         "true_fourier_norm_squared": true_fourier_norm_squared,

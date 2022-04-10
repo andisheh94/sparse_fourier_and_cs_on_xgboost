@@ -17,7 +17,7 @@ for depth in range(2,8):
         for lmda_i, lmda in enumerate(10 ** np.linspace(-4,1,8)):
             for try_number in range(10):
                 path = Path(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_"
-                            f"C={C}_lambda={lmda}_tryno={try_number}.json", 'w', encoding='utf-8')
+                            f"C={C:.3}_lambda={lmda:.6}_tryno={try_number}.json", 'w', encoding='utf-8')
                 if not path.is_file():
                     submit_string = f"bsub -W {depth_to_time[depth]} "\
                                     f" -o logs/{dataset}_n={n}_no_trees={no_trees}_C={C:.3}_lambda={lmda_i}_tryno={try_number}.txt"\
