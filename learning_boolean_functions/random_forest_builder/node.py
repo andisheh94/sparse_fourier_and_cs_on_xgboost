@@ -1,6 +1,5 @@
 import numpy as np
 from random_forest_builder.fourier import Fourier
-from functools import cache
 from collections import deque
 """
 The Node class is for building decision trees recursively
@@ -75,7 +74,6 @@ class Node:
     """
     Get tree prediction for input x
     """
-    @cache
     def predict(self, X):
         predictions = []
         for row in X:
