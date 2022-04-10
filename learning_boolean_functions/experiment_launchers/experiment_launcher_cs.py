@@ -20,7 +20,7 @@ for depth in range(2,9):
                     submit_string = f"bsub -W 3:59 "\
                                     f" -o logs/{dataset}_n={n}_no_trees={no_trees}_C={C:.3}_lambda={lmda_i}_tryno={try_number}.txt"\
                                     f" -R rusage[mem=4000] "\
-                                    f"python -u cs_runner.py {n} {no_trees} {depth} {try_number} {C} {lmda} "\
+                                    f"python -u cs_runner.py {n} {no_trees} {depth} {try_number} {C} {lmda} {dataset} "\
                                     f"&> /dev/null"
                     if not dry_run:
                         os.system(submit_string)

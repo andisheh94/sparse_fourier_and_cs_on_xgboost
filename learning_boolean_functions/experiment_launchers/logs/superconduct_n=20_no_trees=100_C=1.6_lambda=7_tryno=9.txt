@@ -1,0 +1,39 @@
+Sender: LSF System <lsfadmin@eu-ms-003-32>
+Subject: Job 213015190: <python -u cs_runner.py 20 100 8 9 1.6 10.0> in cluster <euler> Exited
+
+Job <python -u cs_runner.py 20 100 8 9 1.6 10.0> was submitted from host <eu-login-29> by user <amrollaa> in cluster <euler> at Sun Apr 10 18:23:48 2022
+Job was executed on host(s) <eu-ms-003-32>, in queue <normal.4h>, as user <amrollaa> in cluster <euler> at Sun Apr 10 18:24:19 2022
+</cluster/home/amrollaa> was used as the home directory.
+</cluster/project/infk/krause/andisheh/sparse_fourier_and_cs_on_xgboost/learning_boolean_functions/experiment_launchers> was used as the working directory.
+Started at Sun Apr 10 18:24:19 2022
+Terminated at Sun Apr 10 18:24:24 2022
+Results reported at Sun Apr 10 18:24:24 2022
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+python -u cs_runner.py 20 100 8 9 1.6 10.0
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   0.97 sec.
+    Max Memory :                                 250 MB
+    Average Memory :                             -
+    Total Requested Memory :                     4000.00 MB
+    Delta Memory :                               3750.00 MB
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   12 sec.
+    Turnaround time :                            36 sec.
+
+The output (if any) follows:
+
+Traceback (most recent call last):
+  File "cs_runner.py", line 10, in <module>
+    dataset = sys.argv[7]
+IndexError: list index out of range
