@@ -10,16 +10,18 @@ parser.add_argument('--notrees', type=int, default=100)
 parser.add_argument('--dryrun', action='store_true')
 args = parser.parse_args()
 dataset, n, no_trees, dry_run = args.dataset, args.n, args.notrees, args.dryrun
-for depth in range(2,9):
+depth_to_mem = {2: 4000, 3: 4000, 4: 4000, 5: 10000, 6:40000, 7:40000, 8:40000}
+depth_to_time = {2: "3:59", 3: "3:59", 4: "3:59", 5: "23:59", 6: "23:59", 7: "23:59", 8: "123:59"}
+for depth in range(2,8):
     for C in np.linspace(0.8,1.6,10):
         for lmda_i, lmda in enumerate(10 ** np.linspace(-4,1,8)):
             for try_number in range(10):
                 path = Path(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_"
                             f"C={C}_lambda={lmda}_tryno={try_number}.json", 'w', encoding='utf-8')
                 if not path.is_file():
-                    submit_string = f"bsub -W 3:59 "\
+                    submit_string = f"bsub -W {depth_to_time[depth]} "\
                                     f" -o logs/{dataset}_n={n}_no_trees={no_trees}_C={C:.3}_lambda={lmda_i}_tryno={try_number}.txt"\
-                                    f" -R rusage[mem=4000] "\
+                                    f" -R rusage[mem={depth_to_mem[depth]}] "\
                                     f"python -u cs_runner.py {n} {no_trees} {depth} {try_number} {C} {lmda} {dataset} "\
                                     f"&> /dev/null"
                     if not dry_run:
