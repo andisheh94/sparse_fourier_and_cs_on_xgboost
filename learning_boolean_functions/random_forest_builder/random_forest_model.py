@@ -37,6 +37,14 @@ class RandomForestModel:
             tree = Node.build_tree_from_sklearn(decision_tree_regressor)
             self.fourier_transform += tree.get_fourier()
         print(f"Sparsity = {self.get_fourier_transform().get_sparsity()}")
+        self.sampling_complexity = 0
+
+    def reset_sampling_complexity(self):
+        self.sampling_complexity = 0
+
+    def get_sampling_complexity(self):
+        return self.sampling_complexity
+
     @staticmethod
     def get_dataset(dataset_name):
         if dataset_name == "crimes":
@@ -49,6 +57,7 @@ class RandomForestModel:
 
     def __getitem__(self, item):
         self.fourier_transform.__getitem__(item)
+        self.sampling_complexity += 1
 
     def __call__(self, item):
         return self.__getitem__(self, item)

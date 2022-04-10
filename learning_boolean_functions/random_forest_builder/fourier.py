@@ -3,7 +3,7 @@ from math import isclose
 TOLERANCE_ZERO = 0.00001
 # Tolerance used when checking for equality of two Fourier objects
 TOLERANCE_EQUALITY = 0.1
-
+from functools import lru_cache
 class Fourier:
 
     def __init__(self, series):
@@ -35,6 +35,7 @@ class Fourier:
     def zero(cls):
         return cls({})
 
+    @lru_cache(None)
     def __getitem__(self, argument):
         result = 0
         for key in self.series:
