@@ -1,5 +1,4 @@
 from math import isclose
-from functools import cache
 # Numbers smaller than this are considered to be zero and deleted
 TOLERANCE_ZERO = 0.00001
 # Tolerance used when checking for equality of two Fourier objects
