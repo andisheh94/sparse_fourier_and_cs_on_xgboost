@@ -1,3 +1,5 @@
-leaning_boolean_function.egg-info/
-experiment_launchers/logs/
-results/*
+learning_boolean_functions/leaning_boolean_function.egg-info/
+learning_boolean_functions/experiment_launchers/logs/
+learning_boolean_functions/results/*
+*.pyc
+*.pyo
