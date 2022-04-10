@@ -42,6 +42,9 @@ class Fourier:
             result += mult * self.series[key]
         return result
 
+    def __call__(self, argument):
+        return self.__getitem__(argument)
+
     def degree(self):
         deg = 0
         for key in self.series:
