@@ -10,9 +10,6 @@ class Fourier:
         self.series = series
         self.cleanup()
 
-
-
-
     # Remove frequencies with zero coefficients
     def cleanup(self):
         for key in list(self.series.keys()):
@@ -35,7 +32,6 @@ class Fourier:
     def zero(cls):
         return cls({})
 
-    @lru_cache(None)
     def __getitem__(self, argument):
         result = 0
         for key in self.series:

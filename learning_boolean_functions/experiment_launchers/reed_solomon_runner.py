@@ -14,13 +14,9 @@ if __name__ == "__main__":
     k = true_fourier_transform.get_sparsity()
 
     # Get Fourier transform
-    # Fill cache
-    fourier_transform = swht(random_forest_model.model, REED_SOLOMON, n, k, C=C, degree=depth)
-    # Reset sampling complexity after filling cache
-    random_forest_model.reset_sampling_complexity()
     # Get Fourier transform again
     start = time.time()
-    fourier_transform = swht(random_forest_model.model, REED_SOLOMON, n, k, C=C, degree=depth)
+    fourier_transform = swht(random_forest_model, REED_SOLOMON, n, k, C=C, degree=depth)
     end = time.time()
     elapsed_time = end - start
     print(fourier_transform)
