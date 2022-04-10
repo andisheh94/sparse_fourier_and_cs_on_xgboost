@@ -45,6 +45,52 @@ struct amplitude_iterator;
  * @param bin_ratio: (random binning - optional) bins reduction ratio for binary search
  * @param degree: (Reed-Solomon - optional) degree of the frequencies of the signal
  */
+
+/** Amplitude iterator
+ * A simple iterator to go through an array of double.
+ */
+struct amplitude_iterator {
+
+    // Relevant types
+    using iterator_category = std::random_access_iterator_tag;
+    using difference_type   = std::ptrdiff_t;
+    using value_type        = double;
+    using pointer           = value_type *;
+    using reference         = value_type &;
+
+    // Constructors/destructors
+    amplitude_iterator(value_type *ptr): m_ptr(ptr) {}
+
+    // Reference operators
+    reference operator*() const { return *m_ptr; }
+    pointer operator->() { return m_ptr; }
+    reference operator[](size_t i) { return m_ptr[i]; }
+
+    // Forward operators
+    amplitude_iterator &operator++() { m_ptr++; return *this; }
+    amplitude_iterator operator++(int) { amplitude_iterator tmp = *this; ++(*this); return tmp; }
+    amplitude_iterator &operator+=(difference_type n) { m_ptr += n; return *this; }
+    amplitude_iterator operator+(difference_type n) { return amplitude_iterator(m_ptr + n); }
+    friend amplitude_iterator operator+(difference_type n, const amplitude_iterator &a) { return amplitude_iterator(a.m_ptr + n); }
+
+    // Backward operators
+    amplitude_iterator &operator--() { m_ptr--; return *this; }
+    amplitude_iterator operator--(int) { amplitude_iterator tmp = *this; --(*this); return tmp; }
+    amplitude_iterator &operator-=(difference_type n) { m_ptr -= n; return *this; }
+    amplitude_iterator operator-(difference_type n) { return amplitude_iterator(m_ptr - n); }
+
+    // Relational operators
+    bool operator==(const amplitude_iterator &b) { return m_ptr == b.m_ptr; };
+    bool operator!=(const amplitude_iterator &b) { return m_ptr != b.m_ptr; };
+    difference_type operator-(const amplitude_iterator &b) { return m_ptr - b.m_ptr; }
+    bool operator<(const amplitude_iterator &b) { return m_ptr < b.m_ptr; }
+    bool operator>(const amplitude_iterator &b) { return m_ptr > b.m_ptr; }
+    bool operator<=(const amplitude_iterator &b) { return m_ptr <= b.m_ptr; }
+    bool operator>=(const amplitude_iterator &b) { return m_ptr >= b.m_ptr; }
+    
+private:
+    double *m_ptr;
+};
 template <int cs_algorithm, typename ... Args> 
 int swht_robust(PyObject *signal, frequency_map &current_estimate, unsigned long n, unsigned long K, double C, double ratio,
 unsigned long robust_interations, Args ... cs_args) {
@@ -357,48 +403,3 @@ template int swht_robust<REED_SOLOMON_CS, unsigned long>(PyObject *signal, frequ
     double C, double ratio, unsigned long robust_iterations, unsigned long degree);
 
 
-/** Amplitude iterator
- * A simple iterator to go through an array of double.
- */
-struct amplitude_iterator {
-
-    // Relevant types
-    using iterator_category = std::random_access_iterator_tag;
-    using difference_type   = std::ptrdiff_t;
-    using value_type        = double;
-    using pointer           = value_type *;
-    using reference         = value_type &;
-
-    // Constructors/destructors
-    amplitude_iterator(value_type *ptr): m_ptr(ptr) {}
-
-    // Reference operators
-    reference operator*() const { return *m_ptr; }
-    pointer operator->() { return m_ptr; }
-    reference operator[](size_t i) { return m_ptr[i]; }
-
-    // Forward operators
-    amplitude_iterator &operator++() { m_ptr++; return *this; }
-    amplitude_iterator operator++(int) { amplitude_iterator tmp = *this; ++(*this); return tmp; }
-    amplitude_iterator &operator+=(difference_type n) { m_ptr += n; return *this; }
-    amplitude_iterator operator+(difference_type n) { return amplitude_iterator(m_ptr + n); }
-    friend amplitude_iterator operator+(difference_type n, const amplitude_iterator &a) { return amplitude_iterator(a.m_ptr + n); }
-
-    // Backward operators
-    amplitude_iterator &operator--() { m_ptr--; return *this; }
-    amplitude_iterator operator--(int) { amplitude_iterator tmp = *this; --(*this); return tmp; }
-    amplitude_iterator &operator-=(difference_type n) { m_ptr -= n; return *this; }
-    amplitude_iterator operator-(difference_type n) { return amplitude_iterator(m_ptr - n); }
-
-    // Relational operators
-    bool operator==(const amplitude_iterator &b) { return m_ptr == b.m_ptr; };
-    bool operator!=(const amplitude_iterator &b) { return m_ptr != b.m_ptr; };
-    difference_type operator-(const amplitude_iterator &b) { return m_ptr - b.m_ptr; }
-    bool operator<(const amplitude_iterator &b) { return m_ptr < b.m_ptr; }
-    bool operator>(const amplitude_iterator &b) { return m_ptr > b.m_ptr; }
-    bool operator<=(const amplitude_iterator &b) { return m_ptr <= b.m_ptr; }
-    bool operator>=(const amplitude_iterator &b) { return m_ptr >= b.m_ptr; }
-    
-private:
-    double *m_ptr;
-};

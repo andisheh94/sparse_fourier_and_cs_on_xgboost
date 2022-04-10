@@ -1,0 +1,53 @@
+Sender: LSF System <lsfadmin@eu-g1-006-1>
+Subject: Job 213045893: <python -u cs_runner.py 20 100 7 1 1.6 1.9306977288832496 superconduct> in cluster <euler> Exited
+
+Job <python -u cs_runner.py 20 100 7 1 1.6 1.9306977288832496 superconduct> was submitted from host <eu-login-38> by user <amrollaa> in cluster <euler> at Sun Apr 10 22:09:26 2022
+Job was executed on host(s) <eu-g1-006-1>, in queue <normal.24h>, as user <amrollaa> in cluster <euler> at Sun Apr 10 22:09:55 2022
+</cluster/home/amrollaa> was used as the home directory.
+</cluster/project/infk/krause/andisheh/sparse_fourier_and_cs_on_xgboost/learning_boolean_functions/experiment_launchers> was used as the working directory.
+Started at Sun Apr 10 22:09:55 2022
+Terminated at Sun Apr 10 22:10:15 2022
+Results reported at Sun Apr 10 22:10:15 2022
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+python -u cs_runner.py 20 100 7 1 1.6 1.9306977288832496 superconduct
+------------------------------------------------------------
+
+Exited with exit code 1.
+
+Resource usage summary:
+
+    CPU time :                                   16.70 sec.
+    Max Memory :                                 427 MB
+    Average Memory :                             258.00 MB
+    Total Requested Memory :                     40000.00 MB
+    Delta Memory :                               39573.00 MB
+    Max Swap :                                   -
+    Max Processes :                              3
+    Max Threads :                                4
+    Run time :                                   42 sec.
+    Turnaround time :                            49 sec.
+
+The output (if any) follows:
+
+Accessing superconductor dataset
+(21263, 82)
+324
+[-0.24585129 -0.45020494 -0.3626248  -0.33343142 -0.33343142 -0.68375197
+ -0.04149763  0.0460825  -0.09988439 -0.04149763 -0.24585129 -0.21665791
+ -0.21665791 -0.24585129 -0.21665791  1.38897794 -0.12907777  0.13366264
+ -0.57281713 -0.12907777]
+Fitted random forest regression model with 100 tree(s), max_depth=7
+Score on test data is 0.8168972250650164
+Sparsity = 16774
+Generating 811955 samples
+  0%|          | 0/811955 [00:00<?, ?it/s]  0%|          | 0/811955 [00:01<?, ?it/s]
+Traceback (most recent call last):
+  File "cs_runner.py", line 17, in <module>
+    swht_proximal.sample_function(true_fourier_transform)
+  File "/cluster/project/infk/krause/andisheh/sparse_fourier_and_cs_on_xgboost/learning_boolean_functions/sparse_wht_algorithms/compressive_sensing/proximal_method.py", line 82, in sample_function
+    self.y[j] = f.__getitem__(t)
+TypeError: unhashable type: 'Fourier'
