@@ -17,13 +17,13 @@ for depth in range(2,6):
         for ratio in np.linspace(1.1, 2.1, 10):
             for sampling_factor in np.linspace(0.4,1.5,20):
                     path = Path(f"../results/random/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
-                                f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor}.json")
+                                f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}.json")
                     if not path.is_file():
                         submit_string = f"bsub -W {depth_to_time[depth]} "\
                                         f" -o logs/random/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_" \
-                                        f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor}.json"\
+                                        f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}.txt"\
                                         f" -R rusage[mem={depth_to_mem[depth]}] "\
-                                        f"python -u reed_solomon_runner.py {n} {no_trees} {depth} {C} {ratio} {sampling_factor} {dataset} "\
+                                        f"python -u random_runner.py {n} {no_trees} {depth} {C} {ratio} {sampling_factor} {dataset} "\
                                         f"&> /dev/null"
                         if not dry_run:
                             os.system(submit_string)
