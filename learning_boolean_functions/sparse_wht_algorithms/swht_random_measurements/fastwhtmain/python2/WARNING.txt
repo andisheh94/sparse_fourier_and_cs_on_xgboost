@@ -1,3 +1,0 @@
-The python 2 support is deprecated. It does not work for two dimensional input, 
-and it will not be developed further
-
