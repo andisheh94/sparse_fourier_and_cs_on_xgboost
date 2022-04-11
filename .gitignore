@@ -1,5 +1,10 @@
 learning_boolean_functions/leaning_boolean_function.egg-info/
-learning_boolean_functions/experiment_launchers/logs/
-learning_boolean_functions/results/*
+learning_boolean_functions/experiment_launchers/logs/cs/*
+learning_boolean_functions/experiment_launchers/logs/reed_solomon/*
+learning_boolean_functions/experiment_launchers/logs/binning/*
+learning_boolean_functions/results/cs/*
+learning_boolean_functions/results/reed_solomon/*
+learning_boolean_functions/results/binning/*
+
 *.pyc
 *.pyo
