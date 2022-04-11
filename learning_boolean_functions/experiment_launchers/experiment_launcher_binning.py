@@ -29,7 +29,7 @@ for depth in range(2,9):
                             submit_string = f"bsub -W {depth_to_time[depth]} "\
                                             f" -o logs/binning/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_" \
                                             f"C={C:.3}_ratio={ratio:.3}_csbins={cs_bins}_csiterations={cs_iterations}_"\
-                                            f"csratio={cs_ratio}.txt" \
+                                            f"csratio={cs_ratio}.txt " \
                                             f"-R rusage[mem={depth_to_mem[depth]}] "\
                                             f"python -u binning_runner.py {n} {no_trees} {depth} {C} {ratio} {cs_bins} {cs_iterations} {cs_ratio} {dataset} "\
                                             f"&> /dev/null"
