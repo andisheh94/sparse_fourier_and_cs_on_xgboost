@@ -91,7 +91,6 @@ class ProximalMethod():
             return Fourier({})
         self.lmda = lmda
         x = apg.solve(self.grad, self.proximal, np.zeros(self.no_basis_functions), quiet=True)
-        print(x)
         return self._get_fourier_series_from_vector(x)
 
 
