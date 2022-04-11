@@ -7,6 +7,6 @@ learning_boolean_functions/results/cs/*
 learning_boolean_functions/results/reed_solomon/*
 learning_boolean_functions/results/binning/*
 learning_boolean_functions/results/random/*
-
+learning_boolean_functions/sparse_wht_algorithms/swht_python/fastwhtmain/*
 *.pyc
 *.pyo
