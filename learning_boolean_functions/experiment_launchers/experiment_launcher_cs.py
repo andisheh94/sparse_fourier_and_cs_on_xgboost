@@ -15,15 +15,14 @@ depth_to_time = {2: "3:59", 3: "3:59", 4: "3:59", 5: "23:59", 6: "23:59", 7: "23
 for depth in range(2,8):
     for C in np.linspace(0.8,1.6,10):
         for lmda_i, lmda in enumerate(10 ** np.linspace(-4,1,8)):
-            for try_number in range(10):
-                path = Path(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_"
-                            f"C={C:.3}_lambda={lmda:.6}_tryno={try_number}.json", 'w', encoding='utf-8')
-                if not path.is_file():
-                    submit_string = f"bsub -W {depth_to_time[depth]} "\
-                                    f" -o logs/{dataset}_n={n}_no_trees={no_trees}_C={C:.3}_lambda={lmda:.6}_tryno={try_number}.txt"\
-                                    f" -R rusage[mem={depth_to_mem[depth]}] "\
-                                    f"python -u cs_runner.py {n} {no_trees} {depth} {try_number} {C} {lmda} {dataset} "\
-                                    f"&> /dev/null"
-                    if not dry_run:
-                        os.system(submit_string)
-                    print(submit_string)
+            path = Path(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_"
+                        f"C={C:.3}_lambda={lmda:.6}.json", 'w', encoding='utf-8')
+            if not path.is_file():
+                submit_string = f"bsub -W {depth_to_time[depth]} "\
+                                f" -o logs/cs/{dataset}_n={n}_no_trees={no_trees}_C={C:.3}_lambda={lmda:.6}.txt"\
+                                f" -R rusage[mem={depth_to_mem[depth]}] "\
+                                f"python -u cs_runner.py {n} {no_trees} {depth} {C} {lmda} {dataset} "\
+                                f"&> /dev/null"
+                if not dry_run:
+                    os.system(submit_string)
+                print(submit_string)

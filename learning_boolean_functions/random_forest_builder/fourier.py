@@ -9,6 +9,7 @@ class Fourier:
     def __init__(self, series):
         self.series = series
         self.cleanup()
+        self.sampling_complexity = 0
 
     # Remove frequencies with zero coefficients
     def cleanup(self):
@@ -33,6 +34,7 @@ class Fourier:
         return cls({})
 
     def __getitem__(self, argument):
+        self.samplin_complexity += 1
         result = 0
         for key in self.series:
             mult = 1
@@ -44,6 +46,12 @@ class Fourier:
 
     def __call__(self, argument):
         return self.__getitem__(argument)
+
+    def get_sampling_complexity(self):
+        return self.sampling_complexity
+
+    def reset_sampling_complexity(self):
+        self.sampling_complexity = 0
 
     def degree(self):
         deg = 0
