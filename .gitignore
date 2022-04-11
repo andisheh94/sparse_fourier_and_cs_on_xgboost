@@ -13,3 +13,4 @@ learning_boolean_functions/sparse_wht_algorithms/swht_python/fastwhtmain/
 *.pyo
 .DS_Store
 .idea
+**/.DS_Store
