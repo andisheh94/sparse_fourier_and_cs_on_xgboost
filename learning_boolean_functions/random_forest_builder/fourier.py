@@ -34,7 +34,7 @@ class Fourier:
         return cls({})
 
     def __getitem__(self, argument):
-        self.samplin_complexity += 1
+        self.sampling_complexity += 1
         result = 0
         for key in self.series:
             mult = 1
