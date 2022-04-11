@@ -1,5 +1,5 @@
 from random_forest_builder.random_forest_model import RandomForestModel, Fourier
-from sparse_wht_algorithms.swht.build.src.python_module.swht import swht, REED_SOLOMON
+from sparse_wht_algorithms.swht.build.src.python_module.swht import swht, NAIVE
 import sys
 import numpy as np
 import time
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # Get Fourier transform
     # Get Fourier transform again
     start = time.time()
-    fourier_transform = swht(random_forest_model, REED_SOLOMON, n, k, C=C, degree=depth)
+    fourier_transform = swht(true_fourier_transform, NAIVE , n, k)
     end = time.time()
     elapsed_time = end - start
     print(fourier_transform)
@@ -30,14 +30,9 @@ if __name__ == "__main__":
                         "try_number": try_number, "k": k, "time": elapsed_time, "equality": equality, "mse": mse,
                         "true_fourier_norm_squared": true_fourier_norm_squared,
                         "computed_fourier_norm_squared": computed_fourier_norm_squared,
-                        "measurements": random_forest_model.get_sampling_complexity()}
+                        "measurements": true_fourier_transform.get_sampling_complexity()}
         print(results_dict)
         json.dump(results_dict, f)
-
-
-
-
-
 
 
 
