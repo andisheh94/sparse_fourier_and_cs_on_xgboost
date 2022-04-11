@@ -19,7 +19,6 @@ if __name__ == "__main__":
     fourier_transform = swht(true_fourier_transform, REED_SOLOMON, n, k, degree=depth)
     end = time.time()
     elapsed_time = end - start
-    print(fourier_transform)
     fourier_transform = Fourier.from_tuple_series(fourier_transform)
     equality = (fourier_transform == true_fourier_transform)
     mse = Fourier.get_mse(fourier_transform, true_fourier_transform)

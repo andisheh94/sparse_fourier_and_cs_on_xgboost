@@ -21,7 +21,6 @@ if __name__ == "__main__":
                              cs_iterations=cs_iterations, cs_ratio=cs_ratio)
     end = time.time()
     elapsed_time = end - start
-    print(fourier_transform)
     fourier_transform = Fourier.from_tuple_series(fourier_transform)
     equality = (fourier_transform == true_fourier_transform)
     mse = Fourier.get_mse(fourier_transform, true_fourier_transform)
