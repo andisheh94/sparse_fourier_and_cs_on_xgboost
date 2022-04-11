@@ -19,7 +19,7 @@ for depth in range(2,7):
                         f"C={C:.3}_lambda={lmda:.6}.json", 'w', encoding='utf-8')
             if not path.is_file():
                 submit_string = f"bsub -W {depth_to_time[depth]} "\
-                                f" -o logs/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}" \
+                                f" -o logs/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_" \
                                 f"_C={C:.3}_lambda={lmda:.6}.txt"\
                                 f" -R rusage[mem={depth_to_mem[depth]}] "\
                                 f"python -u cs_runner.py {n} {no_trees} {depth} {C} {lmda} {dataset} "\

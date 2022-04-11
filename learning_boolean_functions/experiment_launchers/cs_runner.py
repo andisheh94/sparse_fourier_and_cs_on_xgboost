@@ -22,7 +22,7 @@ if __name__ == "__main__":
     equality = (fourier_transform == true_fourier_transform)
     mse = Fourier.get_mse(fourier_transform, true_fourier_transform)
     true_fourier_norm_squared, computed_fourier_norm_squared = true_fourier_transform.norm_squared(), fourier_transform.norm_squared()
-    with open(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}"
+    with open(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
               f"C={C:.3}_lambda={lmda:.6}.json", 'w', encoding='utf-8') as f:
         results_dict = {"n": n, "no_trees": no_trees, "depth": depth, "C": C, "lambda": lmda,
                         "k": k, "time": elapsed_time, "equality": equality, "mse": mse,
