@@ -6,8 +6,8 @@ import time
 import json
 if __name__ == "__main__":
     n, no_trees, depth = [int(sys.argv[j]) for j in [1, 2, 3]]
-    C, ratio, cs_bins, cs_iterations, cs_ratio = [float(sys.argv[j]) for j in [4, 5, 6, 7]]
-    dataset = sys.argv[8]
+    C, ratio, cs_bins, cs_iterations, cs_ratio = [float(sys.argv[j]) for j in [4, 5, 6, 7, 8]]
+    dataset = sys.argv[9]
     # Consistency in results
     np.random.seed(0)
     random_forest_model = RandomForestModel(dataset, n, no_trees, depth)
