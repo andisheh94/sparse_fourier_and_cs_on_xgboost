@@ -27,7 +27,7 @@ for depth in range(2,9):
                                     f"csratio={cs_ratio}.json")
                         if not path.is_file():
                             submit_string = f"bsub -W {depth_to_time[depth]} "\
-                                            f" logs/binning/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_" \
+                                            f" -o logs/binning/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_" \
                                             f"C={C:.3}_ratio={ratio:.3}_csbins={cs_bins}_csiterations={cs_iterations}_"\
                                             f"csratio={cs_ratio}.txt" \
                                             f"-R rusage[mem={depth_to_mem[depth]}] "\
