@@ -72,13 +72,13 @@ class RandomFunction(object):
 
     def __eq__(self, other):
         count = 0
-        for freq, x in self.dict.items():
-            try:
-                if math.isclose(x, other.dict[freq], abs_tol=0.1):
-                    count += 1
-            except KeyError:
+        for freq, amplitude in self.dict.items():
+            if not math.isclose(amplitude, other.dict.get(freq,0), abs_tol=0.1):
                 return False
-        return count == len(other.dict)
+        for freq, amplitude in other.dict.items():
+            if not math.isclose(amplitude, self.dict.get(freq,0), abs_tol=0.1):
+                return False
+        return True
 
     @staticmethod
     def create_from_FT(n, fourier):

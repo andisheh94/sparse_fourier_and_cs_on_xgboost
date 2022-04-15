@@ -78,6 +78,9 @@ class Fourier:
                 return False
         return True
 
+    def __truediv__(self, divisor):
+        return Fourier({freq : amp/divisor for (freq, amp) in self.series.items()})
+
     def get_sparsity(self):
         return len(self.series)
 

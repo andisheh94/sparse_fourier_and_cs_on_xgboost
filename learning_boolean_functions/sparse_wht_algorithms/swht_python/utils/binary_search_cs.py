@@ -13,18 +13,19 @@ class BinarySearchCS:
         self.n = n
         # No. of bins coordinates are hashd to in the first round
         try:
-            self.no_bins = kwargs["no_bins"]
+            self.no_bins = kwargs["cs_bins"]
         except KeyError:
             self.no_bins = 3
         # No. of iterations
         try:
-            self.iterations = kwargs["iterations"]
+            self.iterations = kwargs["cs_iterations"]
         except KeyError:
             self.iterations = 1
         # Halving ration of the buckets
         try:
-            self.ratio = kwargs["ratio"]
+            self.ratio = kwargs["cs_ratio"]
         except KeyError:
+            print("Don't enter")
             self.ratio = 2
         # List of all the measurements to be put into the measurement matrix
         self.measurements = []

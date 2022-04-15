@@ -23,9 +23,10 @@ class ProximalMethod():
         self.no_basis_functions = 0
         coordinates = range(self.n)
         for d in range(self.degree+1):
+            print(f"d={d}")
             frequencies = list(combinations(coordinates, d))
             # print(frequencies)
-            for freq in frequencies:
+            for freq in tqdm(frequencies):
                 freq = list(freq)
                 temp = np.zeros(self.n, dtype=int)
                 temp[freq] = 1
@@ -105,10 +106,11 @@ class ProximalMethod():
         return self.m
 
 if __name__ == "__main__":
-    n = 10
-    k = 5
-    d = 5
+    n = 400
+    k = 10
+    d = 3
     f = RandomFunction(n, k , d)
-    print(f)
-    proximal_method = ProximalMethod(n, k, d)
-    print(proximal_method.run(f))
+    # print(f)
+    proximal_method = ProximalMethod(n, k, d , 1)
+    proximal_method.sample_function(f)
+    print(proximal_method.run(lmda=1))

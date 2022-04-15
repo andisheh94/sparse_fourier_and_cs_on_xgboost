@@ -9,19 +9,25 @@ import numpy as np
 class RandomForestModel:
 
     def __init__(self, dataset, n, n_estimators, max_depth):
+
         data = RandomForestModel.get_dataset(dataset)
+
         # Use only top n features to train
         try:
-            f = open(f"../random_forest_builder/feature_importance_{dataset}.txt", "r", encoding="utf-8")
-            feature_importance = np.array(json.load(f))
-            top_n_features = np.argsort(feature_importance)[-n:]
-            self.X_train, self.X_test, self.y_train, self.y_test = train_test_split \
-                (data.x, data.y, test_size=0.1, random_state=1)
-            self.X_train, self.X_test = self.X_train[:, top_n_features], self.X_test[:, top_n_features]
+            if (dataset=="superconduct" and n==324) or (dataset=="crimes" and n==500):
+                self.X_train, self.X_test, self.y_train, self.y_test = train_test_split \
+                    (data.x, data.y, test_size=0.1, random_state=1)
+            else:
+                f = open(f"../random_forest_builder/feature_importance_{dataset}.txt", "r", encoding="utf-8")
+                feature_importance = np.array(json.load(f))
+                top_n_features = np.argsort(feature_importance)[-n:]
+                self.X_train, self.X_test, self.y_train, self.y_test = train_test_split \
+                    (data.x, data.y, test_size=0.1, random_state=1)
+                self.X_train, self.X_test = self.X_train[:, top_n_features], self.X_test[:, top_n_features]
         except IOError:
             raise Exception(f"Feature importance file for dataset {dataset} does not exist."
                   f"\nPlease make it by running the \"compute_feature_importance\" function ")
-        self.n_var = n
+        n = self.n_var = self.X_train.shape[1]
         self.shape = [2] * n
         self.sampling_complexity = 0
         self.dataset, self.n_estimators, self.max_depth = dataset, n_estimators, max_depth
@@ -35,10 +41,14 @@ class RandomForestModel:
         self.fourier_transform  = Fourier.zero()
         for decision_tree_regressor in self.regr.estimators_:
             tree = Node.build_tree_from_sklearn(decision_tree_regressor)
-            self.fourier_transform += tree.get_fourier()
+            self.fourier_transform += tree.get_fourier()/n_estimators
         print(f"Sparsity = {self.get_fourier_transform().get_sparsity()}")
         self.sampling_complexity = 0
+        self.cache = {}
 
+
+    def clear_cache(self):
+        self.cache = {}
     def reset_sampling_complexity(self):
         self.sampling_complexity = 0
 
@@ -56,8 +66,12 @@ class RandomForestModel:
         return data
 
     def __getitem__(self, item):
-        self.fourier_transform.__getitem__(item)
         self.sampling_complexity += 1
+        try:
+            return self.cache[item]
+        except KeyError:
+            self.cache[item] = self.regr.predict(np.reshape(item, (1, -1))).item()
+            return self.cache[item]
 
     def __call__(self, item):
         return self.__getitem__(self, item)
@@ -88,5 +102,6 @@ class RandomForestModel:
 
 if __name__ == "__main__":
     for depth in [1,2,3,4,5,6,7,8,9,10]:
-        random_forest_model = RandomForestModel("crimes", 10, 100, depth)
+        random_forest_model = RandomForestModel("superconduct", 324, 20, depth)
+        print(random_forest_model.get_fourier_transform().get_sparsity())
     #RandomForestModel.compute_feature_importance("crimes", 100, 10)

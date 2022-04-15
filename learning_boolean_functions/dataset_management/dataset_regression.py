@@ -53,7 +53,6 @@ class Superconduct:
         self.shape = [2] * binary_dimension
         print(len(self.shape))
 
-        print(self.y[0:20])
 
 class BoneMarrow:
     def __init__(self):

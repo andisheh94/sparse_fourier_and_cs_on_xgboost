@@ -10,11 +10,16 @@ parser.add_argument('--notrees', type=int, default=100)
 parser.add_argument('--dryrun', action='store_true')
 args = parser.parse_args()
 dataset, n, no_trees, dry_run = args.dataset, args.n, args.notrees, args.dryrun
+
+if dataset == "crimes":
+    n=500
+elif dataset=="superonduct":
+    n=324
 depth_to_mem = {2: 4000, 3: 4000, 4: 4000, 5: 10000, 6:10000, 7:10000, 8:10000}
-depth_to_time = {2: "3:59", 3: "3:59", 4: "3:59", 5: "23:59", 6: "23:59", 7: "23:59", 8: "23:59"}
+depth_to_time = {2: "3:59", 3: "3:59", 4: "3:59", 5: "23:59", 6: "23:59", 7: "23:59", 8: "123:59"}
 for depth in range(2,9):
-    for C in np.linspace(1,1.6,10):
-        for ratio in np.linspace(1.1,2.1,10):
+    for C in np.linspace(1, 1.8, 5):
+        for ratio in np.linspace(1.1, 2.1, 5):
             path = Path(f"../results/reed_solomon/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
                         f"C={C:.3}_ratio={ratio:.3}.json")
             if not path.is_file():

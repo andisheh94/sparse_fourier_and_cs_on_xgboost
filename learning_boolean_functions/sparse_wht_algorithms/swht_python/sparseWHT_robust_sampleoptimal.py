@@ -6,7 +6,7 @@ from sparse_wht_algorithms.swht_python.utils.random_function import RandomFuncti
 
 
 class SWHTRobust(object):
-    def __init__(self, n, K, C=4, ratio=1.4, finite_field_class="naive_cs", robust_iterations=1, epsilon=0.0001,
+    def __init__(self, n, K, C=1.4, ratio=1.4, finite_field_class="naive_cs", robust_iterations=1, epsilon=0.0001,
                  no_processes=1, **kwargs):
         # C bucket constant
         self.C = C
@@ -28,12 +28,14 @@ class SWHTRobust(object):
         # Parallelized frequency recovery if no_processes is not 1
         self.no_processes = no_processes
 
-    def run(self, x):
+    def run(self, x, seed=None):
+        if seed!=None:
+            np.random.seed(seed)
         # B = no of bins we are hashing to
         B = int(self.K * self.C)
         b = int(ceil(log(B, 2)))
         # No. rounds
-        T = min(int(floor(log(B, self.ratio))) - 1,4)
+        T = min(int(floor(log(B, self.ratio))) - 1,3)
         current_estimate = {}
         for i in range(T):
             # Define a new hashing matrix
@@ -211,18 +213,18 @@ class SWHTRobust(object):
 
 if __name__ == "__main__":
     # np.random.seed(0)
-    n = 10
-    k = 5
-    degree = 2
+    n = 400
+    k = 10
+    degree = 3
     # swht = SWHT(n, k)
-    swht = SWHTRobust(n, k, finite_field_class="random_cs", degree=degree, sampling_factor=0.8 )
-    # swht = SWHTRobust(n, k, finite_field_class="reed_solomon", degree=degree)
-    # swht = SWHT(n, k, 1.4, 1.4, finite_field_class="binary_search_cs", no_bins=10, iterations=2)
+    # swht = SWHTRobust(n, k, finite_field_class="random_cs", degree=degree, sampling_factor= 0.7 )
+    # swht = SWHTRobust(n, k, finite_field_class="reed_solomon_cs", degree=degree)
+    # swht = SWHTRobust(n, k, finite_field_class="binary_search_cs", cs_bins=30, cs_iterations=2, cs_ratio=1.5)
     # swht = SWHT(n, k, 1.4, 1.4, finite_field_class="hashing_based_cs")
     f = RandomFunction(n, k, degree)
-    print("f is :", f, flush=True)
+    #print("f is :", f, flush=True)
     out = swht.run(f)
-    print("out is", out)
+    #print("out is", out)
     fprime = RandomFunction.create_from_FT(n, out)  #  print("fprime is ", fprime)
     if (f == fprime):
         print("Success")
