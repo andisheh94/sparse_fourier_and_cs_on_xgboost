@@ -5,11 +5,10 @@ import argparse
 from math import ceil
 parser = argparse.ArgumentParser(description='Run the tests for the random binning approach')
 parser.add_argument('dataset', help='This can be either \'crimes\' or \'superconduct\'')
-parser.add_argument('-n', type=int)
-parser.add_argument('--notrees', type=int, default=100)
+parser.add_argument('--notrees', type=int, default=20)
 parser.add_argument('--dryrun', action='store_true')
 args = parser.parse_args()
-dataset, n, no_trees, dry_run = args.dataset, args.n, args.notrees, args.dryrun
+dataset, no_trees, dry_run = args.dataset, args.notrees, args.dryrun
 assert(dataset in ["crimes", "superconduct"])
 if dataset == "crimes":
     n=500
