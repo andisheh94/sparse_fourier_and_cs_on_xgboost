@@ -5,8 +5,7 @@ import argparse
 
 parser = argparse.ArgumentParser(description='Run the tests for the reed_solomon approach')
 parser.add_argument('dataset', help='This can be either \'crimes\' or \'superconduct\'')
-parser.add_argument('-n', type=int, default=20)
-parser.add_argument('--notrees', type=int, default=100)
+parser.add_argument('--notrees', type=int, default=20)
 parser.add_argument('--dryrun', action='store_true')
 args = parser.parse_args()
 dataset, n, no_trees, dry_run = args.dataset, args.n, args.notrees, args.dryrun
