@@ -12,7 +12,7 @@ dataset, no_trees, dry_run = args.dataset, args.notrees, args.dryrun
 assert(dataset in ["crimes", "superconduct"])
 if dataset == "crimes":
     n=500
-elif dataset=="superonduct":
+elif dataset=="superconduct":
     n=324
 depth_to_mem = {2: 4000, 3: 4000, 4: 4000, 5: 10000, 6:10000, 7:10000, 8:10000}
 depth_to_time = {2: "3:59", 3: "3:59", 4: "3:59", 5: "23:59", 6: "23:59", 7: "23:59", 8: "123:59"}
