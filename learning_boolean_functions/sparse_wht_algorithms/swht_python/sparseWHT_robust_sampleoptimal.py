@@ -212,9 +212,8 @@ class SWHTRobust(object):
                     p.join()
         # Make new signal estimate by taking medians
         new_signal_estimate = {}
-        while queue_out:
+        while not queue_out.empty():
             bucket, recovered_freq = queue_out.get()
-            print(bucket, recovered_freq)
             if hash.do_FreqHash(recovered_freq) != bucket:
                 continue
             index = 0
@@ -245,10 +244,10 @@ class SWHTRobust(object):
 
 if __name__ == "__main__":
     # np.random.seed(0)
-    n = 20
+    n = 400
     k = 10
-    degree = 2
-    swht = SWHTRobust(n, k, finite_field_class="random_cs", degree=degree, sampling_factor=1, wait_time=None )
+    degree = 3
+    swht = SWHTRobust(n, k, finite_field_class="random_cs", degree=degree, sampling_factor=1, no_processes=10, wait_time=None )
     # swht = SWHTRobust(n, k, finite_field_class="reed_solomon_cs", degree=degree)
     # swht = SWHTRobust(n, k, finite_field_class="binary_search_cs", cs_bins=30, cs_iterations=2, cs_ratio=1.5)
     f = RandomFunction(n, k, degree)
