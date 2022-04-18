@@ -25,7 +25,9 @@ class RandomCS:
     def get_measurement_matrix(self):
         return self.measurement_matrix
 
-    def recover_vector(self, measurement_binary, bucket=None):
+    def recover_vector(self, queue_in, queue_out):
+        measurement_binary, bucket = queue_in.get()
+        print("start", measurement_binary, bucket)
         if len(measurement_binary) != self.no_binary_measurements:
             raise ValueError("Bin or measurement does not have the correct dimension")
 
@@ -51,9 +53,14 @@ class RandomCS:
         model.addCons(quicksum(vars[j] for j in range(self.n)) <= self.degree)
         # Find solution
         model.optimize()
+        print("Optimized")
+        print(model.getStage())
         sol = model.getBestSol()
+        print(type(sol))
+        print("sol", sol)
         sol = np.array([int(sol[vars[j]]) for j in range(self.n)], dtype=int)
-        return sol
+        print("finish", sol)
+        queue_out.put((bucket, sol))
 
     @staticmethod
     def _get_number_measurements(n, d):

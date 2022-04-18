@@ -3,7 +3,7 @@ from math import ceil, log, isclose, floor
 from sparse_wht_algorithms.swht_python.utils import naive_cs, binary_search_cs, reed_solomon_cs, random_cs, hashing
 from sparse_wht_algorithms.swht_python.utils.WHT import WHT
 from sparse_wht_algorithms.swht_python.utils.random_function import RandomFunction
-
+import multiprocessing
 
 class SWHTRobust(object):
     def __init__(self, n, K, C=1.4, ratio=1.4, finite_field_class="naive_cs", robust_iterations=1, epsilon=0.0001,
@@ -25,7 +25,7 @@ class SWHTRobust(object):
         # Number of repetition required for robust iterations
         self.robust_iterations = robust_iterations
         self.eps = epsilon
-        # Parallelized frequency recovery if no_processes is not 1
+        # Parallelized frequency recovery if no_processes is > 1
         self.no_processes = no_processes
 
     def run(self, x, seed=None):
@@ -89,9 +89,11 @@ class SWHTRobust(object):
         elif self.finite_field_class == "binary_search_cs":
             return binary_search_cs.BinarySearchCS(self.n, **self.settings_finite_field)
         elif self.finite_field_class == "random_cs":
-            return random_cs.RandomCS(self.n, hash, self.settings_finite_field["degree"],
+            try:
+                return random_cs.RandomCS(self.n, hash, self.settings_finite_field["degree"],
                                       self.settings_finite_field["sampling_factor"])
-
+            except KeyError:
+                print("For using random_cs decoding you need to specify the degree, sampling factor and wait time")
         else:
             raise ValueError("The finite_field_class \"", self.finite_field_class, "\"does not exist")
 
@@ -146,7 +148,6 @@ class SWHTRobust(object):
 
                 # Only continue if a frequency with non-zero amplitude is hashed to bucket j
                 if isclose(ref_signal[bucket], 0.0, abs_tol=self.eps):
-                    # print("Entered if statement for ref_signal[bucket]=0")
                     continue
                 else:
                     successful_tries[bucket] += 1
@@ -167,22 +168,52 @@ class SWHTRobust(object):
                             measurement_dict[bucket][j] = 1
                 ampl_dict[bucket].append(ref_signal[bucket])
 
-        new_signal_estimate = {}
-        # Take majority vote for frequency and median for amplitudes
+        # Get measurements in each bucket
+        measurement = {}
         for bucket in measurement_dict:
             if successful_tries[bucket] == 0:
                 continue
-            measurement = [0] * no_measurements
+            measurement[bucket] = [0] * no_measurements
             for j in range(no_measurements):
                 if measurement_dict[bucket][j] > successful_tries[bucket] / 2:
-                    measurement[j] = 1
+                    measurement[bucket][j] = 1
                 else:
-                    # measurement[j] = 0
+                    # measurement[bucket][j] = 0
                     pass
-            try:
-                recovered_freq =  finite_field_cs.recover_vector(measurement, bucket)
-            except: #Reed solomon degree might be too high
-                continue
+        # Launch parallel jobs to get frequency in each bucket
+        queue_in = multiprocessing.Queue()
+        queue_out = multiprocessing.Queue()
+        job_list = []
+        for bucket in measurement:
+            queue_in.put((measurement[bucket], bucket))
+            p = multiprocessing.Process(target=finite_field_cs.recover_vector, args=(queue_in, queue_out))
+            job_list.append(p)
+
+        # Start jobs in batches of size self.no_processes
+        while job_list:
+            batch = []
+            for _ in range(self.no_processes):
+                try:
+                    p = job_list.pop()
+                    p.start()
+                    batch.append(p)
+                except IndexError: #job_list is now empty
+                    break
+            for p in batch:
+                if self.finite_field_class == "random_cs":
+                    # Wait for 'wait_time' seconds or until process finishes
+                    p.join(self.settings_finite_field["wait_time"])
+                    # If thread is still active
+                    if p.is_alive():
+                        print("alive")
+                        p.kill()
+                        p.join()
+                else:
+                    p.join()
+        # Make new signal estimate by taking medians
+        new_signal_estimate = {}
+        while queue_out:
+            bucket, recovered_freq = queue_out.get()
             if hash.do_FreqHash(recovered_freq) != bucket:
                 continue
             index = 0
@@ -213,14 +244,12 @@ class SWHTRobust(object):
 
 if __name__ == "__main__":
     # np.random.seed(0)
-    n = 400
+    n = 20
     k = 10
     degree = 3
-    # swht = SWHT(n, k)
-    # swht = SWHTRobust(n, k, finite_field_class="random_cs", degree=degree, sampling_factor= 0.7 )
+    swht = SWHTRobust(n, k, finite_field_class="random_cs", degree=degree, sampling_factor=1, wait_time=None )
     # swht = SWHTRobust(n, k, finite_field_class="reed_solomon_cs", degree=degree)
     # swht = SWHTRobust(n, k, finite_field_class="binary_search_cs", cs_bins=30, cs_iterations=2, cs_ratio=1.5)
-    # swht = SWHT(n, k, 1.4, 1.4, finite_field_class="hashing_based_cs")
     f = RandomFunction(n, k, degree)
     #print("f is :", f, flush=True)
     out = swht.run(f)
