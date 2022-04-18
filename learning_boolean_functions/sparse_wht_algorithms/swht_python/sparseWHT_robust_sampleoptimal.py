@@ -214,6 +214,7 @@ class SWHTRobust(object):
         new_signal_estimate = {}
         while queue_out:
             bucket, recovered_freq = queue_out.get()
+            print(bucket, recovered_freq)
             if hash.do_FreqHash(recovered_freq) != bucket:
                 continue
             index = 0
@@ -246,7 +247,7 @@ if __name__ == "__main__":
     # np.random.seed(0)
     n = 20
     k = 10
-    degree = 3
+    degree = 2
     swht = SWHTRobust(n, k, finite_field_class="random_cs", degree=degree, sampling_factor=1, wait_time=None )
     # swht = SWHTRobust(n, k, finite_field_class="reed_solomon_cs", degree=degree)
     # swht = SWHTRobust(n, k, finite_field_class="binary_search_cs", cs_bins=30, cs_iterations=2, cs_ratio=1.5)
