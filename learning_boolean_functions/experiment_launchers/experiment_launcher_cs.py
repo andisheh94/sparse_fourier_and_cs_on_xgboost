@@ -22,7 +22,6 @@ for depth in [2,3]:
             path = Path(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
                         f"C={C:.3}_lambda={lmda:.6}.json")
             if not path.is_file():
-                print(path)
                 submit_string = f"bsub -W {depth_to_time[depth]} "\
                                 f" -o logs/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}" \
                                 f"_C={C:.3}_lambda={lmda:.6}.txt"\
