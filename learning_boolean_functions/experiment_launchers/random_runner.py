@@ -13,12 +13,18 @@ if __name__ == "__main__":
     true_fourier_transform = random_forest_model.get_fourier_transform()
     k = true_fourier_transform.get_sparsity()
     # Get Fourier transform
-    # Get Fourier transform again
-    swht = SWHTRobust(n, k, finite_field_class="random_cs", C=C, ratio=ratio, degree=depth, sampling_factor=sampling_factor)
     start = time.time()
-    fourier_transform = swht.run(true_fourier_transform)
+    SWHTRobust(n, k, finite_field_class="random_cs", C=C, ratio=ratio, degree=depth, sampling_factor=sampling_factor).\
+        run(random_forest_model, seed=0)
     end = time.time()
-    elapsed_time = end - start
+    elapsed_time_uncached = end - start
+    random_forest_model.reset_sampling_complexity()
+    # Get Fourier transform again cached
+    start = time.time()
+    fourier_transform = SWHTRobust(n, k, finite_field_class="random_cs", C=C, ratio=ratio, degree=depth, sampling_factor=sampling_factor). \
+        run(random_forest_model, seed=0)
+    end = time.time()
+    elapsed_time_cached = end - start
     fourier_transform = Fourier.from_tuple_series(fourier_transform)
     equality = (fourier_transform == true_fourier_transform)
     mse = Fourier.get_mse(fourier_transform, true_fourier_transform)
@@ -26,10 +32,11 @@ if __name__ == "__main__":
     with open(f"../results/random/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
               f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}.json", 'w', encoding='utf-8') as f:
         results_dict = {"n": n, "no_trees": no_trees, "depth": depth, "C": C, "ratio":ratio,
-                        "sampling_factor": sampling_factor, "k": k, "time": elapsed_time,
+                        "sampling_factor": sampling_factor, "k": k,
+                        "time_uncached": elapsed_time_uncached, "time_cached": elapsed_time_cached,
                         "equality": equality, "mse": mse,
                         "true_fourier_norm_squared": true_fourier_norm_squared,
                         "computed_fourier_norm_squared": computed_fourier_norm_squared,
-                        "measurements": true_fourier_transform.get_sampling_complexity()}
+                        "measurements": random_forest_model.get_sampling_complexity()}
         print(results_dict)
         json.dump(results_dict, f)
