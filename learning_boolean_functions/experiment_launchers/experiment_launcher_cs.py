@@ -17,7 +17,7 @@ elif dataset=="superconduct":
 depth_to_mem = {2: 4000, 3: 10000, 4: 10000, 5: 40000}
 depth_to_time = {2: "3:59", 3: "23:59", 4: "123:59", 5: "123:59"}
 for depth in range(2,6):
-    for C in np.linspace(0.1, 0.9, 10):
+    for C in np.linspace(0.1, 1.4, 10):
         for lmda_i, lmda in enumerate(10 ** np.linspace(-5,2,8)):
             path = Path(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
                         f"C={C:.3}_lambda={lmda:.6}.json", 'w', encoding='utf-8')
