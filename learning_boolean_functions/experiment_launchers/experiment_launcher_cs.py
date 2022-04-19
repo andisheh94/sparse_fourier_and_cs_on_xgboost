@@ -14,9 +14,9 @@ if dataset == "crimes":
     n=500
 elif dataset=="superconduct":
     n=324
-depth_to_mem = {2: 4000, 3: 40000, 4: 40000, 5: 40000}
-depth_to_time = {2: "3:59", 3: "23:59", 4: "123:59", 5: "123:59"}
-for depth in range(2,6):
+depth_to_mem = {2: 4000, 3: 40000, 4: 40000}
+depth_to_time = {2: "3:59", 3: "23:59", 4: "123:59"}
+for depth in range(2,5):
     for C in np.linspace(0.1, 1.4, 10):
         for lmda_i, lmda in enumerate(10 ** np.linspace(-5,2,8)):
             path = Path(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
