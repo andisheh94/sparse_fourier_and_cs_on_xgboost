@@ -49,7 +49,8 @@ class Superconduct:
             temp_index += feature_size
 
         self.x = binary_x
-        self.y = (y-np.mean(y))/np.std(y)
+        self.y = y
+        # self.y = (y-np.mean(y))/np.std(y)
         self.shape = [2] * binary_dimension
         print(len(self.shape))
 

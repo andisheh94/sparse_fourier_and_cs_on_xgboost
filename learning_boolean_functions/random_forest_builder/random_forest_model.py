@@ -44,11 +44,14 @@ class RandomForestModel:
             self.fourier_transform += tree.get_fourier()/n_estimators
         print(f"Sparsity = {self.get_fourier_transform().get_sparsity()}")
         self.sampling_complexity = 0
-        self.cache = {}
-
+        self.use_cache = False
+        self.cache = []
+        self.cache_read_index = 0
 
     def clear_cache(self):
-        self.cache = {}
+        self.cache = []
+        self.cache_read_index = 0
+
     def reset_sampling_complexity(self):
         self.sampling_complexity = 0
 
@@ -67,11 +70,13 @@ class RandomForestModel:
 
     def __getitem__(self, item):
         self.sampling_complexity += 1
-        try:
-            return self.cache[item]
-        except KeyError:
-            self.cache[item] = self.regr.predict(np.reshape(item, (1, -1))).item()
-            return self.cache[item]
+        if self.use_cache:
+            value = self.cache[self.cache_read_index]
+            self.cache_read_index += 1
+            return value
+        else:
+            self.cache.append(self.regr.predict(np.reshape(item, (1, -1))).item())
+            return self.cache[-1]
 
     def __call__(self, item):
         return self.__getitem__(self, item)
@@ -101,7 +106,8 @@ class RandomForestModel:
             json.dump(feature_importances, f)
 
 if __name__ == "__main__":
-    for depth in [1,2,3,4,5,6,7,8,9,10]:
+    for depth in [1,2,3,4,5,6,7,8]:
         random_forest_model = RandomForestModel("superconduct", 324, 20, depth)
         print(random_forest_model.get_fourier_transform().get_sparsity())
+        print({freq:amp for freq, amp in random_forest_model.get_fourier_transform().series.items() if abs(amp)<0.00001})
     #RandomForestModel.compute_feature_importance("crimes", 100, 10)

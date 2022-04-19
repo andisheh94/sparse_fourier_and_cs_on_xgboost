@@ -14,7 +14,7 @@ if dataset == "crimes":
     n=500
 elif dataset=="superconduct":
     n=324
-depth_to_mem = {2: 4000, 3: 4000, 4: 10000, 5: 40000}
+depth_to_mem = {2: 4000, 3: 4000, 4: 4000, 5: 4000}
 depth_to_time = {2: "3:59", 3: "3:59", 4: "23:59", 5: "23:59"}
 for depth in range(2,6):
     for C in np.linspace(1, 1.8, 5):

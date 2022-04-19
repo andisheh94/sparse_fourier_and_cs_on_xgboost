@@ -6,7 +6,7 @@ from sparse_wht_algorithms.swht_python.utils.random_function import RandomFuncti
 
 
 class SWHTRobust(object):
-    def __init__(self, n, K, C=1.4, ratio=1.4, finite_field_class="naive_cs", robust_iterations=1, epsilon=0.0001,
+    def __init__(self, n, K, C=1.4, ratio=1.4, finite_field_class="naive_cs", robust_iterations=1, epsilon=0.00001,
                  no_processes=1, **kwargs):
         # C bucket constant
         self.C = C

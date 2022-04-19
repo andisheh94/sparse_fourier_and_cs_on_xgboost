@@ -19,6 +19,7 @@ if __name__ == "__main__":
     elapsed_time_uncached = end - start
     random_forest_model.reset_sampling_complexity()
     # Get Fourier transform again
+    random_forest_model.use_cache = True
     start = time.time()
     fourier_transform = SWHTRobust(n, k, C=C, ratio=ratio, finite_field_class="reed_solomon_cs", degree=depth).run(
         random_forest_model, seed=0)
