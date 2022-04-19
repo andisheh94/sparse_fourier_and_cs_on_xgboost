@@ -16,12 +16,13 @@ elif dataset=="superconduct":
     n=324
 depth_to_mem = {2: 4000, 3: 80000}
 depth_to_time = {2: "3:59", 3: "23:59"}
-for depth in range(2,5):
+for depth in [2,3]:
     for C in np.linspace(0.1, 1.4, 10):
         for lmda_i, lmda in enumerate(10 ** np.linspace(-5,2,8)):
             path = Path(f"../results/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
                         f"C={C:.3}_lambda={lmda:.6}.json", 'w', encoding='utf-8')
             if not path.is_file():
+                print(path)
                 submit_string = f"bsub -W {depth_to_time[depth]} "\
                                 f" -o logs/cs/{dataset}_n={n}_no_trees={no_trees}_depth={depth}" \
                                 f"_C={C:.3}_lambda={lmda:.6}.txt"\
