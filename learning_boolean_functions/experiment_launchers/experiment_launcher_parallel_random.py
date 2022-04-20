@@ -18,8 +18,8 @@ elif dataset=="superconduct":
     n=324
 depth_to_mem = {2: 4000, 3: 4000, 4: 4000, 5: 4000}
 depth_to_time = {2: "3:59", 3: "3:59", 4: "23:59", 5: "23:59"}
-for depth in range(2, 5):
-    for C in np.linspace(0.8, 1.8, 6):
+for depth in range(2, 6):
+    for C in np.linspace(0.6, 1.6, 6):
         for ratio in np.linspace(1.1, 2.1, 5):
             for sampling_factor in np.linspace(0.2,1.4,10):
                     path = Path(f"../results/random_parallel/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
