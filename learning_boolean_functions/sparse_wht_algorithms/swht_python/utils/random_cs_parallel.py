@@ -25,7 +25,9 @@ class RandomCS:
     def get_measurement_matrix(self):
         return self.measurement_matrix
 
-    def recover_vector(self, measurement_binary, bucket=None):
+    def recover_vector(self, queue_in, queue_out):
+        measurement_binary, bucket = queue_in.get()
+
         if len(measurement_binary) != self.no_binary_measurements:
             raise ValueError("Bin or measurement does not have the correct dimension")
 
@@ -43,19 +45,22 @@ class RandomCS:
                 objective = vars[0]
             else:
                 objective = objective + vars[j]
-        # add the constraints for measurments
         model.setObjective(objective)
+        # add the constraints for measurments
         for i in range(self.no_binary_measurements):
             cons = [vars[j] for j in range(self.n) if self.measurement_matrix[i][j] == 1]
             model.addConsXor(cons, True if measurement_binary[i] == 1 else False)
         # add extra constraint for degree
         model.addCons(quicksum(vars[j] for j in range(self.n)) <= self.degree)
+        # model.addCons(quicksum(vars[j] for j in range(self.n)) <= 1)
         # Find solution
-        model.optimize()
-        sol = model.getBestSol()
-        sol = np.array([int(sol[vars[j]]) for j in range(self.n)], dtype=int)
-        return sol
-
+        try:
+            model.optimize()
+            sol = model.getBestSol()
+            sol = np.array([int(sol[vars[j]]) for j in range(self.n)], dtype=int)
+            queue_out.put((bucket, sol))
+        except:
+            print(model.getStatus())
     @staticmethod
     def _get_number_measurements(n, d):
         return 2* ceil(np.log2(sum([RandomCS._nCr(n,i) for i in range(0,d+1)]))) +1
@@ -66,23 +71,3 @@ class RandomCS:
         numer = reduce(op.mul, range(n, n-r, -1), 1)
         denom = reduce(op.mul, range(1, r+1), 1)
         return numer // denom
-
-
-class TestRandomCS(unittest.TestCase):
-    def test(self):
-        n, b, degree = 10, 2, 5
-        hash = Hashing(n,b)
-        random_cs = RandomCS(n, hash, degree)
-        # Initialize some random frequency
-        frequency = np.array([0] * n, dtype=int)
-        #TODO:Frequency might not actually be degree exactly 4 since we are doing sampling with replacement
-        support = np.array([np.random.randint(0, n) for _ in range(degree)], dtype=int)
-        frequency[support] = 1
-        y = np.dot(random_cs.measurement_matrix, frequency) % 2
-        result = random_cs.recover_vector(y)
-        self.assertTrue(np.array_equal(frequency, result))
-
-
-
-if __name__ == "__main__":
-    unittest.main()

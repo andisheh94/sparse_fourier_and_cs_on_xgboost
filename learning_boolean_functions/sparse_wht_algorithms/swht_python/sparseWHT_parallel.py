@@ -1,12 +1,12 @@
 import numpy as np
 from math import ceil, log, isclose, floor
-from sparse_wht_algorithms.swht_python.utils import naive_cs, binary_search_cs, reed_solomon_cs, random_cs, hashing
+from sparse_wht_algorithms.swht_python.utils import random_cs_parallel as random_cs, hashing
 from sparse_wht_algorithms.swht_python.utils.WHT import WHT
 from sparse_wht_algorithms.swht_python.utils.random_function import RandomFunction
 import multiprocessing
 
 class SWHTRobust(object):
-    def __init__(self, n, K, C=1.4, ratio=1.4, finite_field_class="naive_cs", robust_iterations=1, epsilon=0.0001,
+    def __init__(self, n, K, C=1.4, ratio=1.4, finite_field_class="random_cs", robust_iterations=1, epsilon=0.00001,
                  no_processes=1, **kwargs):
         # C bucket constant
         self.C = C
@@ -189,6 +189,7 @@ class SWHTRobust(object):
             p = multiprocessing.Process(target=finite_field_cs.recover_vector, args=(queue_in, queue_out))
             job_list.append(p)
 
+        new_signal_estimate = {}
         # Start jobs in batches of size self.no_processes
         while job_list:
             batch = []
@@ -199,19 +200,29 @@ class SWHTRobust(object):
                     batch.append(p)
                 except IndexError: #job_list is now empty
                     break
+            # Make new signal estimate by taking medians
+            while not queue_out.empty():
+                bucket, recovered_freq = queue_out.get()
+                if hash.do_FreqHash(recovered_freq) != bucket:
+                    continue
+                index = 0
+                for random_shift in successful_try_random_shift[bucket]:
+                    if self.__inp(recovered_freq, random_shift) == 1:
+                        ampl_dict[bucket][index] = -ampl_dict[bucket][index]
+                    index += 1
+                recovered_ampl = np.median(ampl_dict[bucket])
+                new_signal_estimate[tuple(recovered_freq)] = recovered_ampl
+
             for p in batch:
                 if self.finite_field_class == "random_cs":
                     # Wait for 'wait_time' seconds or until process finishes
                     p.join(self.settings_finite_field["wait_time"])
                     # If thread is still active
                     if p.is_alive():
-                        print("alive")
                         p.kill()
-                        p.join()
                 else:
                     p.join()
-        # Make new signal estimate by taking medians
-        new_signal_estimate = {}
+
         while not queue_out.empty():
             bucket, recovered_freq = queue_out.get()
             if hash.do_FreqHash(recovered_freq) != bucket:
