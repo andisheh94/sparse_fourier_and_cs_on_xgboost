@@ -44,7 +44,7 @@ class RandomCS:
             else:
                 objective = objective + vars[j]
         # add the constraints for measurments
-        model.setObjective(objective)
+        # model.setObjective(objective)
         for i in range(self.no_binary_measurements):
             cons = [vars[j] for j in range(self.n) if self.measurement_matrix[i][j] == 1]
             model.addConsXor(cons, True if measurement_binary[i] == 1 else False)

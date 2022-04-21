@@ -45,7 +45,7 @@ class RandomCS:
                 objective = vars[0]
             else:
                 objective = objective + vars[j]
-        model.setObjective(objective)
+        # model.setObjective(objective)
         # add the constraints for measurments
         for i in range(self.no_binary_measurements):
             cons = [vars[j] for j in range(self.n) if self.measurement_matrix[i][j] == 1]
