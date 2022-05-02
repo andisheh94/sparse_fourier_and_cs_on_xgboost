@@ -17,8 +17,9 @@ elif dataset=="superconduct":
 depth_to_mem = {2: 1000, 3: 1000, 4: 4000, 5: 4000, 6:4000, 7:10000, 8:10000}
 depth_to_time = {2: "3:59", 3: "3:59", 4: "3:59", 5: "23:59", 6: "23:59", 7: "23:59", 8: "23:59"}
 C_to_ratio = {0.05: [1.1, 2.6, 5.0], 0.1: [1.1, 2.6, 5.0], 0.15: [1.1, 2.6, 5.0], 0.2: [1.1, 2.6, 5.0], 0.4: [1.1, 2.6, 5.0], 0.6: [2.6, 5.0], 0.8: [2.6, 5.0]}
-for depth in range(2, 6):
-    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8, 1.0]:
+for depth in range(2, 5):
+    print(depth)
+    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8]:
         for ratio in C_to_ratio[C]:
             cs_bins_range = np.linspace(0.2 * depth ** 2 , depth ** 2, 10)
             cs_bins_range = [ceil(a) for a in cs_bins_range]
