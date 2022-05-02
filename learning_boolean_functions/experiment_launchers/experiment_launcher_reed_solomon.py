@@ -18,7 +18,7 @@ depth_to_mem = {2: 1000, 3: 1000, 4: 4000, 5: 4000, 6:4000, 7:10000, 8:10000}
 depth_to_time = {2: "3:59", 3: "3:59", 4: "3:59", 5: "23:59", 6: "23:59", 7: "23:59", 8: "23:59"}
 for depth in range(2, 6):
     for C in [0.05, 0.1, 0.15, 0.2, 0.4]:
-        for ratio in [1.1, 2.6, 5]:
+        for ratio in [1.1, 2.6, 5.0]:
             path = Path(f"../results/reed_solomon/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
                         f"C={C:.3}_ratio={ratio:.3}.json")
             if not path.is_file():

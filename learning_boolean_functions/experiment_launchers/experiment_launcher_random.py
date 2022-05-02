@@ -18,7 +18,7 @@ depth_to_mem = {2: 4000, 3: 4000, 4: 4000, 5: 4000}
 depth_to_time = {2: "3:59", 3: "3:59", 4: "23:59", 5: "23:59"}
 for depth in range(2, 6):
     for C in [0.05, 0.1, 0.15, 0.2, 0.4]:
-        for ratio in [1.1, 2.6, 5]:
+        for ratio in [1.1, 2.6, 5.0]:
             for sampling_factor in np.linspace(0.2,1.4,10):
                     path = Path(f"../results/random/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
                                 f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}.json")
