@@ -109,7 +109,7 @@ class RandomForestModel:
 
 if __name__ == "__main__":
     result = {}
-    dataset = "superconduct"
+    dataset = "crimes"
     for depth in range(1, 13):
         random_forest_model = RandomForestModel(dataset, 324, 20, depth)
         result[depth] = [random_forest_model.get_fourier_transform().get_sparsity(), random_forest_model.score]
