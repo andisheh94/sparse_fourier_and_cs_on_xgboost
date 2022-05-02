@@ -3,10 +3,12 @@ learning_boolean_functions/experiment_launchers/logs/cs/*
 learning_boolean_functions/experiment_launchers/logs/reed_solomon/*
 learning_boolean_functions/experiment_launchers/logs/binning/*
 learning_boolean_functions/experiment_launchers/logs/random/*
+learning_boolean_functions/experiment_launchers/logs/random_parallel/*
 learning_boolean_functions/results/cs/*
 learning_boolean_functions/results/reed_solomon/*
 learning_boolean_functions/results/binning/*
 learning_boolean_functions/results/random/*
+learning_boolean_functions/results/random_parallel/*
 learning_boolean_functions/sparse_wht_algorithms/swht_python/fastwhtmain/
 
 *.pyc
