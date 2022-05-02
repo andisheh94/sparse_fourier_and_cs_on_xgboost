@@ -36,17 +36,19 @@ class RandomForestModel:
         self.regr = RandomForestRegressor(n_estimators=self.n_estimators, max_depth=max_depth, random_state=0)
         self.regr.fit(self.X_train, self.y_train)
         print(f"Fitted random forest regression model with {n_estimators} tree(s), max_depth={max_depth}")
-        score = self.regr.score(self.X_test, self.y_test)
-        print(f"Score on test data is {score}")
+        self.score = self.regr.score(self.X_test, self.y_test)
+        print(f"Score on test data is {self.score}")
         self.fourier_transform  = Fourier.zero()
         for decision_tree_regressor in self.regr.estimators_:
             tree = Node.build_tree_from_sklearn(decision_tree_regressor)
             self.fourier_transform += tree.get_fourier()/n_estimators
         print(f"Sparsity = {self.get_fourier_transform().get_sparsity()}")
+        self.sparsity = self.get_fourier_transform().get_sparsity()
         self.sampling_complexity = 0
         self.use_cache = False
         self.cache = []
         self.cache_read_index = 0
+
 
     def clear_cache(self):
         self.cache = []
@@ -106,8 +108,13 @@ class RandomForestModel:
             json.dump(feature_importances, f)
 
 if __name__ == "__main__":
-    for depth in [1,2,3,4,5,6,7,8]:
-        random_forest_model = RandomForestModel("superconduct", 324, 20, depth)
-        print(random_forest_model.get_fourier_transform().get_sparsity())
-        print({freq:amp for freq, amp in random_forest_model.get_fourier_transform().series.items() if abs(amp)<0.00001})
+    result = {}
+    dataset = "superconduct"
+    for depth in range(1, 13):
+        random_forest_model = RandomForestModel(dataset, 324, 20, depth)
+        result[depth] = [random_forest_model.get_fourier_transform().get_sparsity(), random_forest_model.score]
+        print(result[depth])
+        # print({freq:amp for freq, amp in random_forest_model.get_fourier_transform().series.items() if abs(amp)<0.00001})
+    with open(f"scores_{dataset}.json", "w", encoding="utf-8") as f:
+        json.dump(result, f)
     #RandomForestModel.compute_feature_importance("crimes", 100, 10)
