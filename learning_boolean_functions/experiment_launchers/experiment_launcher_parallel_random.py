@@ -23,7 +23,7 @@ for depth in range(2, 6):
         for ratio in [1.1, 2.6, 5.0]:
             for sampling_factor in np.linspace(0.2,1.4,10):
                     path = Path(f"../results/random_parallel/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
-                                f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}.json")
+                                f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}_ncores={n_cores}.json")
                     if not path.is_file():
                         submit_string = f"bsub -W {depth_to_time[depth]} "\
                                         f" -o logs/random_parallel/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_" \
