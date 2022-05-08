@@ -60,7 +60,8 @@ class RandomCS:
             sol = np.array([int(sol[vars[j]]) for j in range(self.n)], dtype=int)
             queue_out.put((bucket, sol))
         except:
-            print(model.getStatus())
+            pass
+            # print(model.getStatus())
     @staticmethod
     def _get_number_measurements(n, d):
         return 2* ceil(np.log2(sum([RandomCS._nCr(n,i) for i in range(0,d+1)]))) +1

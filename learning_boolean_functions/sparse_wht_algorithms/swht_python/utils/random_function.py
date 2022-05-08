@@ -2,9 +2,11 @@ import math
 import numpy as np
 # from WHT import WHT
 import random
-
+from random_forest_builder.fourier import Fourier
 class RandomFunction(object):
-    def __init__(self, n, k, degree=None):
+    def __init__(self, n, k, degree=None, seed=None):
+        if seed != None:
+            np.random.seed(seed)
         self.n = n
         self.k = k
 
@@ -18,9 +20,12 @@ class RandomFunction(object):
         for _ in range(k):
             self.add_random_coeff()
             # print("success")
+        self.cache = []
+        self.use_cache = False
+        self.cache_index = 0
+        self.fourier_transform = Fourier.from_tuple_series(self.dict)
 
-    # TODO: make this more technically correct since it is not sampling
-    # TODO: uniformly over all d-sparse vectros
+
     def add_random_coeff(self):
         index = list(range(self.n))
         freq_degree = np.random.randint(0, self.degree + 1)
@@ -39,7 +44,7 @@ class RandomFunction(object):
                 freq[i] = 1
             freq = tuple(freq)
             # print(freq)
-        self.dict[freq] = np.random.randint(1, 10)
+        self.dict[freq] = np.random.randint(-100, 100)
 
     def add_coeff(self, freq, x):
         if freq not in self.dict:
@@ -47,6 +52,11 @@ class RandomFunction(object):
         self.dict[freq] = x
 
     def __getitem__(self, t):
+        if self.use_cache == True:
+            value = self.cache[self.cache_index]
+            self.cache_index += 1
+            self.sampCplx += 1
+            return value
         self.sampCplx += 1
         value = 0
         # print("sampling t=", t)
@@ -56,8 +66,8 @@ class RandomFunction(object):
                 value += self.dict[freq]
             else:
                 value -= self.dict[freq]
-
-        return value + 0.001 * np.random.normal()
+        self.cache.append(value)
+        return value
 
     def reset_sampling_complexity(self):
         ret = self.get_sampling_complexity()
@@ -80,12 +90,10 @@ class RandomFunction(object):
                 return False
         return True
 
-    @staticmethod
-    def create_from_FT(n, fourier):
-        f = RandomFunction(n, 0)
-        for freq, x in fourier.items():
-            f.add_coeff(freq, x)
-        return f
+    def get_fourier_transform(self):
+        return self.fourier_transform
+
+
 
 
 # This class has all the properties of RandomFunction except that it returns
