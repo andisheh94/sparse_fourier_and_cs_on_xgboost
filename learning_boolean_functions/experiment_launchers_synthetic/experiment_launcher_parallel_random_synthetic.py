@@ -11,15 +11,18 @@ parser.add_argument('--ncores', type=int, default=10)
 parser.add_argument('--wait_time', type=int, default=100)
 args = parser.parse_args()
 n, k, seed, dry_run, n_cores, wait_time = args.n, args.k, args.seed, args.dryrun, args.ncores, args.wait_time
+deg_to_time = {2: "1:00", 3: "3:59", 4: "3:59", 5: "23:59"}
 for degree in range(2, 6):
     print(degree)
+    if degree==5:
+        wait_time = 1000
     for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 3.0]:
         for ratio in [1.1, 1.6, 3.0]:
             for sampling_factor in np.linspace(0.2,1.4,5):
                     path = Path(f"../results_synthetic/random_parallel/n={n}_k={k}_degree={degree}_"
                     f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}_seed={seed}.json")
                     if not path.is_file():
-                        submit_string = f"bsub -W 23:59 -n {n_cores}"\
+                        submit_string = f"bsub -W {deg_to_time[degree]} -n {n_cores}"\
                                         f" -o logs/random_parallel_synthetic/n={n}_k={k}_degree={degree}_" \
                                         f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}_seed={seed}.txt " \
                                         f"-R rusage[mem=10000] "\
