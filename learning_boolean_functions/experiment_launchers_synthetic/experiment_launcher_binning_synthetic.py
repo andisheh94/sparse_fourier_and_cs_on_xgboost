@@ -13,7 +13,7 @@ args = parser.parse_args()
 n, k, seed, dry_run = args.n, args.k, args.seed, args.dryrun
 for degree in [2, 3, 4, 5, 10, 20]:
     print(degree)
-    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8, 1.0,  2.0, 3.0]:
+    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 3.0]:
         for ratio in [1.1, 1.6, 3.0]:
             cs_bins_range = np.linspace(0.2 * degree ** 2 if degree < 10 else 0.05 * degree ** 2,
                                         degree ** 2 if degree < 10 else 0.5 * degree ** 2, 10)

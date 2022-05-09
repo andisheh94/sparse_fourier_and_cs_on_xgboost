@@ -17,7 +17,7 @@ for degree in range(2, 6):
     print(degree)
     if degree==5:
         wait_time = 1000
-    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8, 1.0, 2.0, 3.0]:
+    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 3.0]:
         for ratio in [1.1, 1.6, 3.0]:
             for sampling_factor in np.linspace(0.2, 2.0, 10):
                     path = Path(f"../results_synthetic/random_parallel/n={n}_k={k}_degree={degree}_"
