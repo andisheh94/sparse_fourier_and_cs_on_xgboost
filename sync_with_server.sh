@@ -1,1 +1,2 @@
 rsync -avzh  amrollaa@login.euler.ethz.ch:/cluster/project/infk/krause/andisheh/sparse_fourier_and_cs_on_xgboost/learning_boolean_functions/results  /Users/andishehamrollahi/Desktop/sparse_fourier_and_cs_random_forest/learning_boolean_functions/
+rsync -avzh  amrollaa@login.euler.ethz.ch:/cluster/project/infk/krause/andisheh/sparse_fourier_and_cs_on_xgboost/learning_boolean_functions/results_synthetic  /Users/andishehamrollahi/Desktop/sparse_fourier_and_cs_random_forest/learning_boolean_functions/
