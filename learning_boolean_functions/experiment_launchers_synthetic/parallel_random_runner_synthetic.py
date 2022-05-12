@@ -18,6 +18,7 @@ if __name__ == "__main__":
     SWHTRobust(n, k, finite_field_class="random_cs", C=C, ratio=ratio, degree=degree,
                sampling_factor=sampling_factor, no_processes=n_cores,
                wait_time=wait_time).run(random_f, seed=seed)
+
     end = time.time()
     elapsed_time_uncached = end - start
     # Get fourier transform this time cached

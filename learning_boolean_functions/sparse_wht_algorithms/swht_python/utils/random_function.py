@@ -28,7 +28,7 @@ class RandomFunction(object):
 
     def add_random_coeff(self):
         index = list(range(self.n))
-        freq_degree = np.random.randint(0, self.degree + 1)
+        freq_degree = np.random.randint(self.degree, self.degree + 1)
         sampled_coordinates = random.sample(index, freq_degree)
         freq = [0] * self.n
         for i in sampled_coordinates:

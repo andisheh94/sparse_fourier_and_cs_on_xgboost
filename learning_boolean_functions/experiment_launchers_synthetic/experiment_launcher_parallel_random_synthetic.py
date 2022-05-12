@@ -11,11 +11,11 @@ parser.add_argument('--ncores', type=int, default=10)
 parser.add_argument('--wait_time', type=int, default=100)
 args = parser.parse_args()
 n, k, seed, dry_run, n_cores, wait_time = args.n, args.k, args.seed, args.dryrun, args.ncores, args.wait_time
-deg_to_time = {2: "3:59", 3: "23:59", 4: "23:59", 5: "123:59"}
+deg_to_time = {2: "3:59", 3: "23:59", 4: "123:59", 5: "123:59"}
 deg_to_mem = {2: 4000, 3: 10000, 4: 20000, 5: 40000}
-for degree in range(2, 6):
+for degree in [4]:
     print(degree)
-    if degree==5:
+    if degree==4:
         wait_time = 1000
     for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 3.0]:
         for ratio in [1.1, 1.6, 3.0]:
