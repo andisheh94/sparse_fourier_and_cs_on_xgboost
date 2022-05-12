@@ -16,12 +16,12 @@ if dataset == "crimes":
     n=500
 elif dataset=="superconduct":
     n=324
-depth_to_mem = {2: 4000, 3: 4000, 4: 4000, 5: 4000}
-depth_to_time = {2: "3:59", 3: "3:59", 4: "23:59", 5: "23:59"}
-for depth in range(2, 6):
-    for C in [0.05, 0.1, 0.15, 0.2, 0.4]:
+depth_to_mem = {2: 4000, 3: 4000, 4: 40000, 5: 40000}
+depth_to_time = {2: "3:59", 3: "3:59", 4: "123:59", 5: "123:59"}
+for depth in [4,5]:
+    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8]:
         for ratio in [1.1, 2.6, 5.0]:
-            for sampling_factor in np.linspace(0.2, 1.4, 10):
+            for sampling_factor in np.linspace(2, 6, 10):
                     path = Path(f"../results/random_parallel/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
                                 f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}_ncores={n_cores}.json")
                     if not path.is_file():
