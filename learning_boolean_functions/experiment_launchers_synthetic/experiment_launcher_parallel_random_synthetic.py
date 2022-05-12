@@ -17,9 +17,9 @@ for degree in [4]:
     print(degree)
     if degree==4:
         wait_time = 1000
-    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 3.0]:
+    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 3.0, 4.0]:
         for ratio in [1.1, 1.6, 3.0]:
-            for sampling_factor in np.linspace(2.0, 4.0, 10):
+            for sampling_factor in np.linspace(2.0, 6.0, 10):
                     path = Path(f"../results_synthetic/random_parallel/n={n}_k={k}_degree={degree}_"
                     f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}_seed={seed}.json")
                     if not path.is_file():
