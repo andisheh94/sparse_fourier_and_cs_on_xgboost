@@ -15,21 +15,13 @@ if __name__ == "__main__":
     # print(true_fourier_transform)
     # Get Fourier transform
     start = time.time()
-    SWHTRobust(n, k, finite_field_class="random_cs", C=C, ratio=ratio, degree=degree,
+    fourier_transform_tuple = SWHTRobust(n, k, finite_field_class="random_cs", C=C, ratio=ratio, degree=degree,
                sampling_factor=sampling_factor, no_processes=n_cores,
                wait_time=wait_time).run(random_f, seed=seed)
 
     end = time.time()
     elapsed_time_uncached = end - start
     # Get fourier transform this time cached
-    random_f.use_cache = True
-    random_f.reset_sampling_complexity()
-    start = time.time()
-    fourier_transform_tuple = SWHTRobust(n, k, finite_field_class="random_cs", C=C, ratio=ratio, degree=degree,
-                                   sampling_factor=sampling_factor, no_processes=n_cores,
-                                   wait_time=wait_time).run(random_f, seed=seed)
-    end = time.time()
-    elapsed_time_cached = end - start
     fourier_transform = Fourier.from_tuple_series(fourier_transform_tuple)
     equality = (fourier_transform == true_fourier_transform)
     mse = Fourier.get_mse(fourier_transform, true_fourier_transform)
@@ -38,7 +30,7 @@ if __name__ == "__main__":
               f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}_seed={seed}.json", 'w', encoding='utf-8') as f:
         results_dict = {"n": n, "k": k, "degree": degree, "C": C, "ratio": ratio,
                         "sampling_factor": sampling_factor, "n_cores": n_cores, "wait_time": wait_time,
-                        "time_uncached": elapsed_time_uncached, "time_cached": elapsed_time_cached,
+                        "time_uncached": elapsed_time_uncached,
                         "equality": equality, "mse": mse,
                         "true_fourier_norm_squared": true_fourier_norm_squared,
                         "computed_fourier_norm_squared": computed_fourier_norm_squared,
