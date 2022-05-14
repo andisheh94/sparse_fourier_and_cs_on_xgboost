@@ -18,12 +18,12 @@ learning_boolean_functions/results/random/*
 learning_boolean_functions/results/random_parallel/*
 
 learning_boolean_functions/results_synthetic/cs/*
-learning_boolean_functions/results_synthetic/reed_solomon/*
+learning_boolean_functions/results_synthetic/reed_solomon_synthetic/*
 learning_boolean_functions/results_synthetic/binning/*
 learning_boolean_functions/results_synthetic/random/*
 learning_boolean_functions/results_synthetic/random_parallel/*
 
-
+learning_boolean_functions/plotter_synthetic/plots
 learning_boolean_functions/sparse_wht_algorithms/swht_python/fastwhtmain/
 
 *.pyc
