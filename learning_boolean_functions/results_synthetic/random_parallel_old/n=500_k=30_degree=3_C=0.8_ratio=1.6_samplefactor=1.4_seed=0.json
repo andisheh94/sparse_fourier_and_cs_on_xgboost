@@ -1,0 +1,1 @@
+{"n": 500, "k": 30, "degree": 3, "C": 0.8, "ratio": 1.6, "sampling_factor": 1.4000000000000001, "n_cores": 10, "wait_time": 100, "time_uncached": 290.61720395088196, "time_cached": 257.76413798332214, "equality": false, "mse": 1784.0, "true_fourier_norm_squared": 127372, "computed_fourier_norm_squared": 131864.0, "measurements": 4608}
