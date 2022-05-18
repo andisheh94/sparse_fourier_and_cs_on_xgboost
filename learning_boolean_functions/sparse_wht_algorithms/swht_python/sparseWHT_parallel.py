@@ -38,6 +38,7 @@ class SWHTRobust(object):
         T = min(int(floor(log(B, self.ratio))) - 1,3)
         current_estimate = {}
         for i in range(T):
+            print(f"{i}/{T}")
             # Define a new hashing matrix
             hash = hashing.Hashing(self.n, b)
             # hashed_estimate will hold as keys bin frequencies and as values
@@ -120,7 +121,7 @@ class SWHTRobust(object):
             # the corresponding shift of the successful try
             successful_try_random_shift[bucket] = []
         random_shift_list = [np.random.randint(low=0, high=2, size=(self.n,)) for _ in range(self.robust_iterations)]
-
+        print("getting FOurier transforms")
         for random_shift in random_shift_list:
             hashed_signal = hash.do_TimeHash(x, random_shift)
             ref_signal = self.get_WHT(hashed_signal, hash.b)
@@ -167,7 +168,7 @@ class SWHTRobust(object):
                         except KeyError:
                             measurement_dict[bucket][j] = 1
                 ampl_dict[bucket].append(ref_signal[bucket])
-
+        print("finished getting fourier transforms")
         # Get measurements in each bucket
         measurement = {}
         for bucket in measurement_dict:
@@ -180,6 +181,7 @@ class SWHTRobust(object):
                 else:
                     # measurement[bucket][j] = 0
                     pass
+        print("Launching integer programs")
         # Launch parallel jobs to get frequency in each bucket
         queue_in = multiprocessing.Queue()
         queue_out = multiprocessing.Queue()
@@ -234,7 +236,7 @@ class SWHTRobust(object):
                 index += 1
             recovered_ampl = np.median(ampl_dict[bucket])
             new_signal_estimate[tuple(recovered_freq)] = recovered_ampl
-
+        print("finished running integer programs")
         return new_signal_estimate
 
 
