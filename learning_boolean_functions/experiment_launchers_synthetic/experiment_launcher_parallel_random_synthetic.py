@@ -16,7 +16,7 @@ deg_to_mem = {2: 1000, 3: 1000, 4: 1000, 5: 1000}
 for degree in [4]:
     print(degree)
     if degree==4:
-        wait_time = 3600
+        wait_time = 10000
     for C in [0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 3.0, 4.0]:
         for ratio in [1.1, 1.6, 3.0]:
             for sampling_factor in list(np.linspace(0.2, 2.0, 10))+ list(np.linspace(2.0, 6.0, 10)):
