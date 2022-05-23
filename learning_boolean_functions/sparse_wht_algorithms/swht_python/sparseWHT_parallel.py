@@ -196,12 +196,12 @@ class SWHTRobust(object):
         print(f"no_jobs = {len(job_list)}")
         while job_list:
             batch = []
-            while True:
+            while len(batch)<self.no_processes:
                 try:
                     p = job_list.pop()
                     p.start()
-
                     batch.append(p)
+                    print("launch")
                 except IndexError: #job_list is now empty
                     break
             # Make new signal estimate by taking medians
@@ -217,9 +217,11 @@ class SWHTRobust(object):
             #    recovered_ampl = np.median(ampl_dict[bucket])
             #    new_signal_estimate[tuple(recovered_freq)] = recovered_ampl
             print("finished launch")
+            l = 0
             for p in batch:
                 # Wait for 'wait_time' seconds or until process finishes
-                print("join")
+                print(f"join {l}")
+                l+=1
                 p.join(self.settings_finite_field["wait_time"])
             print("finsihed join")
             for p in batch:
