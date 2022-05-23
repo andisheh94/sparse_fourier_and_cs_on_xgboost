@@ -200,25 +200,28 @@ class SWHTRobust(object):
                 try:
                     p = job_list.pop()
                     p.start()
+
                     batch.append(p)
                 except IndexError: #job_list is now empty
                     break
             # Make new signal estimate by taking medians
-            while not queue_out.empty():
-                bucket, recovered_freq = queue_out.get()
-                if hash.do_FreqHash(recovered_freq) != bucket:
-                    continue
-                index = 0
-                for random_shift in successful_try_random_shift[bucket]:
-                    if self.__inp(recovered_freq, random_shift) == 1:
-                        ampl_dict[bucket][index] = -ampl_dict[bucket][index]
-                    index += 1
-                recovered_ampl = np.median(ampl_dict[bucket])
-                new_signal_estimate[tuple(recovered_freq)] = recovered_ampl
-
+            #while not queue_out.empty():
+            #    bucket, recovered_freq = queue_out.get()
+            #    if hash.do_FreqHash(recovered_freq) != bucket:
+            #        continue
+            #    index = 0
+            #    for random_shift in successful_try_random_shift[bucket]:
+            #        if self.__inp(recovered_freq, random_shift) == 1:
+            #            ampl_dict[bucket][index] = -ampl_dict[bucket][index]
+            #        index += 1
+            #    recovered_ampl = np.median(ampl_dict[bucket])
+            #    new_signal_estimate[tuple(recovered_freq)] = recovered_ampl
+            print("finished launch")
             for p in batch:
                 # Wait for 'wait_time' seconds or until process finishes
+                print("join")
                 p.join(self.settings_finite_field["wait_time"])
+            print("finsihed join")
             for p in batch:
                 # If thread is still active
                 if p.is_alive():
