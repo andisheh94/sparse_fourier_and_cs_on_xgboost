@@ -193,6 +193,7 @@ class SWHTRobust(object):
 
         new_signal_estimate = {}
         # Start jobs in batches of size self.no_processes
+        print(f"no_jobs = {len(job_list)}")
         while job_list:
             batch = []
             while True:
@@ -216,16 +217,14 @@ class SWHTRobust(object):
                 new_signal_estimate[tuple(recovered_freq)] = recovered_ampl
 
             for p in batch:
-                if self.finite_field_class == "random_cs":
-                    # Wait for 'wait_time' seconds or until process finishes
-                    p.join(self.settings_finite_field["wait_time"])
-                    # If thread is still active
-                    if p.is_alive():
-                        print("killing")
-                        p.kill()
-                else:
-                    p.join()
-
+                # Wait for 'wait_time' seconds or until process finishes
+                p.join(self.settings_finite_field["wait_time"])
+            for p in batch:
+                # If thread is still active
+                if p.is_alive():
+                    print("killing")
+                    p.kill()
+        print("finished killing")
         while not queue_out.empty():
             bucket, recovered_freq = queue_out.get()
             if hash.do_FreqHash(recovered_freq) != bucket:
