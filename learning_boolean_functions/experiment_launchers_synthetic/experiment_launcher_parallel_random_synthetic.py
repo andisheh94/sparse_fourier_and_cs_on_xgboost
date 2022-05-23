@@ -7,11 +7,11 @@ parser.add_argument('-n', type=int, default=500)
 parser.add_argument('-k', type=int, default=30)
 parser.add_argument('-seed', type=int, default=0)
 parser.add_argument('--dryrun', action='store_true')
-parser.add_argument('--ncores', type=int, default=20)
+parser.add_argument('--ncores', type=int, default=10)
 parser.add_argument('--wait_time', type=int, default=100)
 args = parser.parse_args()
 n, k, seed, dry_run, n_cores, wait_time = args.n, args.k, args.seed, args.dryrun, args.ncores, args.wait_time
-deg_to_time = {2: "3:59", 3: "23:59", 4: "123:59", 5: "123:59"}
+deg_to_time = {2: "3:59", 3: "23:59", 4: "23:59", 5: "123:59"}
 deg_to_mem = {2: 1000, 3: 1000, 4: 1000, 5: 1000}
 for degree in [4]:
     print(degree)
