@@ -195,7 +195,7 @@ class SWHTRobust(object):
         # Start jobs in batches of size self.no_processes
         while job_list:
             batch = []
-            for _ in range(self.no_processes):
+            while True:
                 try:
                     p = job_list.pop()
                     p.start()
@@ -221,6 +221,7 @@ class SWHTRobust(object):
                     p.join(self.settings_finite_field["wait_time"])
                     # If thread is still active
                     if p.is_alive():
+                        print("killing")
                         p.kill()
                 else:
                     p.join()
