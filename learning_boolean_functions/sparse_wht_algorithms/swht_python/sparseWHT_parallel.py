@@ -221,6 +221,7 @@ class SWHTRobust(object):
         while not queue_out.empty():
             print(queue_out.qsize())
             bucket, recovered_freq = queue_out.get()
+            print(bucket, recovered_freq)
             if hash.do_FreqHash(recovered_freq) != bucket:
                 continue
             index = 0
@@ -228,6 +229,7 @@ class SWHTRobust(object):
                 if self.__inp(recovered_freq, random_shift) == 1:
                     ampl_dict[bucket][index] = -ampl_dict[bucket][index]
                 index += 1
+            print(ampl_dict[bucket])
             recovered_ampl = np.median(ampl_dict[bucket])
             new_signal_estimate[tuple(recovered_freq)] = recovered_ampl
         print("finished running integer programs")
