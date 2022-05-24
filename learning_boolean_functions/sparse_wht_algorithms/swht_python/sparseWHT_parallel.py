@@ -185,8 +185,8 @@ class SWHTRobust(object):
                     pass
         print("Launching integer programs")
         # Launch parallel jobs to get frequency in each bucket
-        queue_in = multiprocessing.Queue()
-        queue_out = multiprocessing.Queue()
+        queue_in = multiprocessing.Manager().Queue()
+        queue_out = multiprocessing.Manager().Queue()
         job_list = []
         for bucket in measurement:
             queue_in.put((measurement[bucket], bucket))
@@ -221,7 +221,7 @@ class SWHTRobust(object):
         while not queue_out.empty():
             print(queue_out.qsize())
             bucket, recovered_freq = queue_out.get()
-            print(bucket, recovered_freq)
+            print("read from queue successfully")
             if hash.do_FreqHash(recovered_freq) != bucket:
                 continue
             index = 0
