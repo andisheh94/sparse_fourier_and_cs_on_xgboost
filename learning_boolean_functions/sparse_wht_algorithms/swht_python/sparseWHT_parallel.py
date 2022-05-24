@@ -199,7 +199,7 @@ class SWHTRobust(object):
         while job_list:
             batch = []
             l = 0
-            while True:
+            while len(batch) <= self.no_processes:
                 try:
                     p = job_list.pop()
                     p.start()

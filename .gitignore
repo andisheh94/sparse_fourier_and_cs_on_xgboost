@@ -5,6 +5,7 @@ learning_boolean_functions/experiment_launchers/logs/reed_solomon/*
 learning_boolean_functions/experiment_launchers/logs/binning/*
 learning_boolean_functions/experiment_launchers/logs/random/*
 learning_boolean_functions/experiment_launchers/logs/random_parallel/*
+learning_boolean_function/experiment_launchers/results/random_parallel_new/*
 
 learning_boolean_functions/experiment_launchers_synthetic/logs/cs/*
 learning_boolean_functions/experiment_launchers_synthetic/logs/reed_solomon/*

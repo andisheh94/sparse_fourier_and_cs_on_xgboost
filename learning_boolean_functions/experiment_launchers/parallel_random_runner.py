@@ -31,7 +31,7 @@ if __name__ == "__main__":
     equality = (fourier_transform == true_fourier_transform)
     mse = Fourier.get_mse(fourier_transform, true_fourier_transform)
     true_fourier_norm_squared, computed_fourier_norm_squared = true_fourier_transform.norm_squared(), fourier_transform.norm_squared()
-    with open(f"../results/random_parallel/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
+    with open(f"../results/random_parallel_new/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
               f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}_ncores={n_cores}.json", 'w', encoding='utf-8') as f:
         results_dict = {"n": n, "no_trees": no_trees, "depth": depth, "C": C, "ratio":ratio,
                         "sampling_factor": sampling_factor, "n_cores": n_cores, "wait_time": wait_time, "k": k,
