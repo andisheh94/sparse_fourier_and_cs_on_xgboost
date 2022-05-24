@@ -123,7 +123,7 @@ class SWHTRobust(object):
             # the corresponding shift of the successful try
             successful_try_random_shift[bucket] = []
         random_shift_list = [np.random.randint(low=0, high=2, size=(self.n,)) for _ in range(self.robust_iterations)]
-        print("getting FOurier transforms")
+        print("getting Fourier transforms")
         for random_shift in random_shift_list:
             hashed_signal = hash.do_TimeHash(x, random_shift)
             ref_signal = self.get_WHT(hashed_signal, hash.b)
@@ -216,9 +216,10 @@ class SWHTRobust(object):
             for p in batch:
                 p.join(0)
                 p.terminate()
-
-            print("finsihed join")
+            print("finished join")
+        print("reading results")
         while not queue_out.empty():
+            print(queue_out.qsize())
             bucket, recovered_freq = queue_out.get()
             if hash.do_FreqHash(recovered_freq) != bucket:
                 continue
