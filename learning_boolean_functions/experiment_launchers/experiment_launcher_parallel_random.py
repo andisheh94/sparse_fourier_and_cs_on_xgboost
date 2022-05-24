@@ -16,12 +16,13 @@ if dataset == "crimes":
     n=500
 elif dataset=="superconduct":
     n=324
-depth_to_mem = {2: 4000, 3: 4000, 4: 40000, 5: 40000}
-depth_to_time = {2: "3:59", 3: "3:59", 4: "123:59", 5: "123:59"}
-for depth in [4,5]:
-    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6, 0.8]:
+depth_to_mem = {2: 1000, 3: 1000, 4: 1000, 5: 1000}
+depth_to_time = {2: "3:59", 3: "3:59", 4: "23:59", 5: "123:59"}
+depth_to_wait_time= {2:100, 3:1000, 4:10000, 5:20000}
+for depth in [2, 3, 4, 5]:
+    for C in [0.05, 0.1, 0.15, 0.2, 0.4, 0.6]:
         for ratio in [1.1, 2.6, 5.0]:
-            for sampling_factor in np.linspace(2, 6, 10):
+            for sampling_factor in list(np.linspace(0.2, 2.0, 10)) + list(np.linspace(2.0, 6.0, 10)):
                     path = Path(f"../results/random_parallel/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_"
                                 f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}_ncores={n_cores}.json")
                     if not path.is_file():
@@ -29,7 +30,7 @@ for depth in [4,5]:
                                         f" -o logs/random_parallel/{dataset}_n={n}_no_trees={no_trees}_depth={depth}_" \
                                         f"C={C:.3}_ratio={ratio:.3}_samplefactor={sampling_factor:.3}.txt"\
                                         f" -R rusage[mem={depth_to_mem[depth]}] "\
-                                        f"python -u parallel_random_runner_synthetic.py {n} {no_trees} {depth} {C} {ratio} {sampling_factor} {n_cores} {wait_time} {dataset} "\
+                                        f"python -u parallel_random_runner.py {n} {no_trees} {depth} {C} {ratio} {sampling_factor} {n_cores} {depth_to_wait_time[depth]} {dataset} "\
                                         f"&> /dev/null"
                         if not dry_run:
                             os.system(submit_string)
